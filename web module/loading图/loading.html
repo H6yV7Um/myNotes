@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>loading图</title>
+	<style type="text/css">
+	html,body{
+		width: 100%;
+		height: 100%;
+		background-color: #061d43;
+	}
+	.loadCon{
+		width: 50px;
+		height: 30px;
+		position: absolute;
+		left: 50%;
+		margin-left: -25px;
+		top: 50%;
+		margin-top: -55px;
+	}
+/*	.loading{
+		width: 80px;
+		height: 110px;
+		position: relative;		
+	}
+	
+	.loading .wave{
+		width: 12px;
+		height: 30px;
+		border: 2px solid #fff;
+		float: left;
+		position: relative;
+	}
+	.loading p{
+		font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+		position: absolute;
+		bottom: 0;
+		left:0;
+		color: #fff;
+		font-size: 18px;
+	}*/
+	/*
+	*动画
+	@-webkit-keyframes wave{
+		from{
+			top:20px;
+		}
+		to{
+			top:-20px;
+		}
+	}
+	@-moz-keyframes wave{
+		from{
+			top:20px;
+		}
+		to{
+			top:-20px;
+		}
+	}*//*
+	@-ms-keyframes wave{
+		from{
+			top:20px;
+		}
+		to{
+			top:-20px;
+		}
+	}*/
+	/*.box0,.box2,.box4{
+		animation:wave 0.4s linear 0s infinite alternate forwards;
+	}
+	.box1,.box3{
+		animation:wave 0.4s linear 0.4s infinite alternate forwards;
+	}	*/
+/*
+	@-webkit-keyframes dotting{
+		from{
+			color:#da0dd6;
+		}
+		to{
+			color:#e63f3f;
+		}
+	}
+	@-moz-keyframes dotting{
+		from{
+			color:#da0dd6;
+		}
+		to{
+			color:#e63f3f;
+		}
+	}*/
+	
+	/*#loading p{
+		animation:dotting 1s linear 0.4s infinite alternate forwards;
+	}*/
+
+
+	</style>
+</head>
+<body>
+
+	<div class="loadCon" id="loadCon">
+
+	</div>
+
+	<script type="text/javascript">
+
+
+
+	var loading = (function(){
+	//插入一个css3动画样式
+	var str_box_webkit = "@-webkit-keyframes wave{from{top:20px;}to{top:-20px;}}";
+	var str_box_moz = "@-moz-keyframes wave{from{top:20px;}to{top:-20px;}}";
+	var str_box_ms = "@-ms-keyframes wave{from{top:20px;}to{top:-20px;}}";
+	//loading 后面的点的css3动画
+	var str_dot_webkit = "	@-webkit-keyframes dotting{from{color:#da0dd6;}to{color:#e63f3f;}}";
+	var str_dot_moz = "	@-moz-keyframes dotting{from{color:#da0dd6;}to{color:#e63f3f;}}";
+	var str_dot_ms = "	@-ms-keyframes dotting{from{color:#da0dd6;}to{color:#e63f3f;}}";
+
+	//判断浏览器执行不同的js语句
+	var isMoz=navigator.userAgent.toLowerCase().indexOf('firefox');
+	var isChrome=navigator.userAgent.toLowerCase().indexOf('chrome');
+	var isOpera=navigator.userAgent.toLowerCase().indexOf('opera');
+	var isIE=navigator.userAgent.toLowerCase().indexOf('msie');
+	if(isMoz >= 0){
+		console.log("111")
+		document.styleSheets[0].insertRule(str_box_moz, 0);
+		document.styleSheets[0].insertRule(str_dot_moz, 0);
+	}
+	if(isChrome >= 0){
+		document.styleSheets[0].insertRule(str_box_webkit, 0);
+		document.styleSheets[0].insertRule(str_dot_webkit, 0);
+	}
+	if(isChrome >= 0){
+		document.styleSheets[0].insertRule(str_box_webkit, 0);
+		document.styleSheets[0].insertRule(str_dot_webkit, 0);
+	}	
+
+	//创建dom 并设置各自的css样式
+	var load_dom = document.createElement("div");
+	load_dom.style.cssText = "width: 80px;height: 110px;position: relative;";
+
+	var box0 = document.createElement("div");
+	box0.style.cssText = "animation:wave 0.4s linear 0s infinite alternate forwards;-webkit-animation:wave 0.4s linear 0s infinite alternate forwards;width: 12px;height: 30px;border: 2px solid #fff;float: left;position: relative;";
+
+	var box1 = document.createElement("div");
+	box1.style.cssText = "animation:wave 0.4s linear 0.4s infinite alternate forwards;width: 12px;height: 30px;border: 2px solid #fff;float: left;position: relative;";
+
+	var box2 = document.createElement("div");
+	box2.style.cssText = "animation:wave 0.4s linear 0s infinite alternate forwards;width: 12px;height: 30px;border: 2px solid #fff;float: left;position: relative;";
+
+	var box3 = document.createElement("div");
+	box3.style.cssText = "animation:wave 0.4s linear 0.4s infinite alternate forwards;width: 12px;height: 30px;border: 2px solid #fff;float: left;position: relative;";
+
+	var box4 = document.createElement("div");
+	box4.style.cssText = "animation:wave 0.4s linear 0s infinite alternate forwards;width: 12px;height: 30px;border: 2px solid #fff;float: left;position: relative;";
+	var p_dom = document.createElement("p");
+	p_dom.innerHTML = "loading."
+	p_dom.style.cssText = "	font-family:Arial,'Helvetica Neue',Helvetica,sans-serif;position: absolute;bottom: 0;left:0;color: #fff;font-size: 18px;animation:dotting 1s linear 0.4s infinite alternate forwards;";
+
+	//组建dom
+	load_dom.appendChild(box0);
+	load_dom.appendChild(box1);
+	load_dom.appendChild(box2);
+	load_dom.appendChild(box3);
+	load_dom.appendChild(box4);
+	load_dom.appendChild(p_dom);
+
+	//dotting的动画
+	var i = 1;
+	var iv = 1;
+	var timer = setInterval(function(){
+		var str = ".....";
+		p_dom.innerHTML = "loading" + str.substr(0,i);
+		i += iv;
+		i == 5 && (iv *= -1);
+		i <= 1 && (iv *= -1);
+	},400)
+
+	return function(dom){
+		dom.appendChild(load_dom);  
+	}
+
+	})()
+
+
+		//获取loading的容器元素
+	var loadContainer = document.getElementById("loadCon");	
+	loading(loadContainer);
+	</script>
+
+
+</body>
+</html>

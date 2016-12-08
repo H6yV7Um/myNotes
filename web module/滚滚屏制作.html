@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+	<title>滚滚屏效果制作思路整理</title>
+	<script type="text/javascript" src="js/syntaxhighlighter_3.0.83/src/shCore.js"></script>
+	<script type="text/javascript" src="js/syntaxhighlighter_3.0.83/scripts/shBrushCSharp.js"></script>
+	<link type="text/css" rel="stylesheet" href="js/syntaxhighlighter_3.0.83/styles/shCoreEmacs.css"/>
+	<script type="text/javascript">SyntaxHighlighter.all();</script>
+	<link rel="stylesheet"  type='text/css' href="css/base.css" />
+	
+	<style type="text/css">
+
+	</style>
+</head>
+<body>
+
+<h1>滚滚屏效果制作思路整理</h1>
+<h3>一. 滚滚屏分类</h3>
+<h4>当前的滚滚屏分为2种</h4>
+<p>1. 有页面移动, 类似百度钱包, 微信T管家,锤子手机页面</p>
+<p>2. 没有页面滚动,只有元素的进场出场,类似QQ浏览器, 手心输入法的页面</p>
+<p>3. 滚滚屏的变种, 有页面移动, 不过页面不是上下移动, 而是左右或其他方向的移动</p>
+
+<h3>二 滚滚屏的参考版心</h3>
+<p>滚滚屏每个页面都需要有版心, 以版心作为定位参考父元素进行绝对定位</p>
+
+<h3>三 滚滚屏首屏元素加载</h3>
+<p>
+	对于有页面滚动的... <br />
+	由于第一屏比较重要,  <br />所以需要等页面图片元素都已加载完成之后再开始动画效果, 加载完成之前用缓冲图提示.
+</p>
+<p>
+	用计数器来判断首屏所需的元素(图片)等是否已全部加载完成, 全部加载完成之后再调用 <b class="red"> inAnimateArr[0]( ) </b>
+</p>
+<!-- 代码自动高亮模板 -->
+<div class="daima">
+	<script type="syntaxhighlighter" class="brush: csharp;">
+	//首页
+	var ono0 = document.getElementById("no0")	
+	var count = 0; //计数器
+	for(var i = 0; i<R.length;i++){
+		//图片用构造函数创建出来, 再对image实例设置src,class等属性
+		var image = new Image();
+		image.src = R[i].src;
+		image.className = R[i].className;
+		//图片加载完成执行函数
+		image.onload = function(){
+			//用计数器来判断是否已全部加载完毕
+			count ++;
+			this.style.opacity = 0;
+			ono0.appendChild(this);
+
+			//判断图片是否全部加载完毕
+			//这个判断需要放在onload事件里面, 因为事件是异步的, 如果放在事件外面, count的值是0
+			if(count == 5){
+			
+			//让提示文本消失
+			$("#loading").hide();
+			//调用首屏入场动画
+			inAnimateArr[0]();
+			}
+		}
+	}	</script>
+</div>
+
+<h3>四 元素的入场退场</h3>
+<p>元素的入场退场动画函数可以保存在两个数组里,每次入场退场时调用数组中相应的项执行即可.</p>
+<div class="daima pd red">
+var inAnimateArr = [fun, fun, fun,...]; <br />
+var outAnimateArr = [fun, fun, fun, ...];
+</div>
+
+<h3>五 滚滚屏的缺点</h3>
+<p>滚滚屏由于元素都是居中显示,所以在高分辨率的屏幕下, 留白严重</p>
+<p>如果内容多, 则不适合用滚滚屏效果, 内容多了, 但是区域有限, 会导致内容排不开 </p>
+
+
+
+
+<!-- 代码自动高亮模板 -->
+<!-- <div class="daima">
+	<script type="syntaxhighlighter" class="brush: csharp;">
+	</script>
+</div> -->
+
+</body>
+</html>

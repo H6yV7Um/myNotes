@@ -1,0 +1,675 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>微信T管家</title>
+
+	<script type="text/javascript" src="js/jquery-1.12.3.min.js"></script>
+	<script type="text/javascript" src="js/jquery.mousewheel.min.js"></script>
+	<script type="text/javascript" src="js/jquery.easie.js"></script>
+	<script type="text/javascript" src="js/velocity.min.js"></script>
+
+	<style type="text/css">
+
+	*{
+		margin: 0;
+		padding: 0;
+	}
+	html,body{
+		width: 100%;
+		height: 100%;
+		/*overflow: hidden;*/
+	}
+	.header{
+		height: 60px;
+		width: 100%;
+		background-color: #eee;
+		position: fixed;
+		top: 0;
+		z-index: 999;
+	}
+
+
+	.inner_c{
+		width: 1000px;
+		height: 100%;
+		margin: 0 auto;
+		position: relative;
+	}
+	.logo{
+		width: 200px;
+		height: 60px;
+		background-color: skyblue;
+		float: left;
+		font-size: 20px;
+		line-height: 60px;
+		text-align: center;
+		color: #fff;
+	}
+	.header ul{
+		list-style: none;
+		float: right;
+	}
+	.header ul li{
+		width: 100px;
+		height: 60px;
+		float: left;
+		
+	}
+	.header ul li a{
+		display: block;
+		text-decoration: none;
+		font-size: 20px;
+		line-height: 60px;
+		text-align: center;
+		color: #333;
+	}
+	.header ul a:hover{
+		background-color: orange;
+	}
+	.content{
+		width: 100%;
+		height: 100%;
+		position: absolute;
+	}
+	.pg{
+		width: 100%;
+		height: 100%;
+		position: relative;
+	} 
+	.inner_c{
+		position: relative;
+	}
+	.no0{
+	background: url(images/b1_bg.jpg) no-repeat center top;
+	background-size: cover;
+	}
+	.no0 img{
+		position: absolute;
+	}
+
+	.no1{
+	background: url(images/b2_bg.jpg) no-repeat center top;
+	background-size: cover;
+
+	}
+
+	.no1 img{
+		position: absolute;
+	}
+
+	.no1 p{
+		position: absolute;
+	}
+
+	.no1 p.biaoti{
+		font-size: 30px;
+		color: #333;
+		font-weight: bold;
+	}
+
+	.no1 p.neirong{
+		font-size: 20px;
+		color: #333;
+	}
+
+	.no2{
+	background: url(images/b3_bg.jpg) no-repeat center top;
+	background-size: cover;
+	}
+
+	.no2 img{
+		position: absolute;
+	}
+
+	.no3{
+	background: url(images/b4_bg.jpg) no-repeat center top;
+	background-size: cover;
+	}
+
+	
+
+	.no4{
+	background: url(images/b5_bg.jpg) no-repeat center top;
+	background-size: cover;
+	}
+
+	.no5{
+	background: url(images/b6_bg.jpg) no-repeat center top;
+	background-size: cover;
+	}
+
+	.no6{
+	background: url(images/b7_bg.jpg) no-repeat center top;
+	background-size: cover;
+	}
+	
+	@-webkit-keyframes shan{
+		from{
+			opacity: 0.4;
+		}
+		to{
+			opacity: 1.0;
+		}
+	}
+	@-webkit-keyframes huang{
+		from{
+			margin-top: -50px;
+		}
+		to{
+			margin-top: 0px;
+		}
+	}
+
+	
+
+	
+
+
+
+</style>
+</head>
+<body>
+	<div class="header">
+		<div class="inner_c">
+		<div class="logo">微信T管家</div>
+		<div class="nav">
+
+			<ul>
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">营销手段</a></li>
+				<li><a href="javascript:;">服务优势</a></li>
+				<li><a href="javascript:;">特色功能</a></li>
+				<li><a href="javascript:;">技术特点</a></li>
+				<li><a href="javascript:;">申请加入</a></li>
+				<li><a href="javascript:;">登录注册</a></li>
+			</ul>
+			</div>
+		</div>
+	</div>
+	<div class="content">
+
+		<div class="pg no0" id="">
+			<div class="inner_c" id="no0">
+				<h3 id="loading">正在加载..</h3>
+			</div>
+		</div>
+		<div class="pg no1">
+			<div class="inner_c">
+				
+				<img class="b2_01" src="images/b2_01.png" alt="" />
+				<img class="b2_03 qiqiu" src="images/b2_03.png" alt="" />
+				<img class="b2_04 qiqiu" src="images/b2_04.png" alt="" />
+				<img class="b2_05 qiqiu" src="images/b2_05.png" alt="" />
+				<img class="b2_06 qiqiu" src="images/b2_06.png" alt="" />
+				<p class="biaoti">微信6亿用户，<br>
+			企业能不进军微信营销？</p>
+			<p class="neirong">中国11.46亿网民中，78%在使用手机上网
+				<br>2013年截至7月底微信用户突破5亿
+				<br>未来的营销
+				<br>不需要太多的途径
+				<br>只要让你的产品进入消费者的手机
+				<br>就是最好的营销
+				<br>抓住11亿用户，微信T管家马上创建您的微网站</p>
+			</div>
+		</div>
+		<div class="pg no2">
+			<div class="inner_c">
+				<img src="images/pg3_03.jpg" alt="">
+				<img src="images/pg3_04.jpg" alt="">
+				<img src="images/pg3_05.jpg" alt="">
+				<img src="images/pg3_06.jpg" alt="">
+				<img src="images/pg3_07.jpg" alt="">
+				<img src="images/pg3_08.jpg" alt="">
+				<img src="images/pg3_09.jpg" alt="">
+				<img src="images/pg3_02.png" alt="">
+
+
+			</div>
+		</div>
+		<div class="pg no3">
+			<div class="inner_c">
+					
+				
+
+			</div>
+		</div>
+		<div class="pg no4">
+			<div class="inner_c"></div>
+		</div>
+		<div class="pg no5">
+			<div class="inner_c"></div>
+		</div>
+		<div class="pg no6">
+			<div class="inner_c"></div>
+		</div>
+		<div class="pg no7">
+			<div class="inner_c"></div>
+		</div>
+
+	</div>
+
+	<script type="text/javascript">
+
+	
+
+
+	//入场退场动画数组
+	var inAnimateArr = [];
+	var outAnimateArr = [];
+
+	//定义入场退场动画
+
+	//首屏的动画
+	inAnimateArr[0] = function(){
+	
+		//龙卷风
+		$(".no0 .b1_02").show()
+		.css({"margin-left":"-100px","opacity" : 0,"top":"150px"})
+		.animate({"margin-left":0 , "opacity" : 1},1000);
+
+		//字
+		$(".no0 .b1_03").show()
+		.css({"left":"700px","opacity" : 0,"top":"430px"})
+		.animate({"left":"700px", "top":"230px","opacity" : 1},1000);
+
+		//按钮
+		$(".no0 .b1_03_btn").show()
+		.css({"left":"700px","opacity" : 0,"top":"630px","animation":"shan 2s ease 0s infinite alternate"})
+		.animate({"left":"700px","top":"430px","opacity" : 1},1000);
+
+		//石头
+		$(".no0 .b1_01").fadeIn().css({"left":"50%","margin-left":"-720px","top":"60%","opacity":0}).animate({"opacity":1});
+		$(".no0 .b1_04").fadeIn().css({"animation":"huang 2s ease 0s infinite alternate","left":"850px","top":"70%","opacity":"0"}).animate({"opacity":1});
+
+	}
+
+	outAnimateArr[0] = function(){
+	
+		//龙卷风
+		$(".no0 .b1_02")
+	
+		.animate({"margin-left":"-100px","opacity" : 0,"top":"150px"},300);
+
+		//字
+		$(".no0 .b1_03")
+		
+		.animate({"left":"700px","opacity" : 0,"top":"430px"},300);
+
+		//按钮
+		$(".no0 .b1_03_btn")
+		.animate({"left":"700px","opacity" : 0,"top":"630px","animation":"shan 2s ease 0s infinite alternate"},300);
+
+		//石头
+		$(".no0 .b1_01").fadeOut()
+		$(".no0 .b1_04").fadeOut();
+
+	}
+
+
+
+	// 设置1号页面的入场动画
+
+inAnimateArr[1] = function(){
+	//1, 左侧手机横向进入
+	$(".no1 .b2_01").show().css({
+		 "left":" -650px",
+   		 "top": "500px",
+   		 "opacity":0
+	}).animate({
+		 "left":"-250px",
+   		 "top": "200px",
+   		 "opacity":1
+	},1000);	
+	//气球右侧进入
+	$(".no1 .b2_06").show().css({
+		 "left":"120%",
+   		 "top": "700px",
+   		 "opacity":0
+
+	}).animate({
+		 "left":"75%",
+   		 "top": "300px",
+   		 "opacity":1
+	},1000);
+
+	//文字入场
+	$(".no1 .biaoti").css({
+		"left":"10%",
+		"top":"300px",
+		"opacity":0
+	}).animate({
+		"left":"50%",		
+		"opacity":0.7
+	},1000).animate({	
+		"opacity":1
+	},300)
+
+	$(".no1 .neirong").css({
+		"left":"80%",
+		"top":"400px",
+		"opacity":0
+	}).animate({
+		"left":"50%",		
+		"opacity":0.7
+	},1000).animate({	
+		"opacity":1
+	},300)
+
+	$(".no1 .b2_03").css({
+		"left":"15%",
+		"top":"200px",
+		"animation":"huang 2s ease 0s infinite alternate"
+	})
+
+	$(".no1 .b2_05").css({
+		"left":"75%",
+		"top":"230px"
+	})
+
+	$(".no1 .b2_04").css({
+		"left":"75%",
+		"top":"530px"
+	})
+
+
+}
+
+//1号页面元素离场动画数组
+outAnimateArr[1] = function(){
+
+	//1, 左侧手机向左下角退出
+	$(".no1 .b2_01").animate({
+		 "left":" -650px",
+   		 "top": "500px",
+   		 "opacity":0
+	},600);	
+	//气球右侧退出
+	$(".no1 .b2_06").animate({
+		 "left":"120%",
+   		 "top": "700px",
+   		 "opacity":0
+	},600);
+
+	//文字入场
+	$(".no1 .biaoti").animate({
+		"left":"30%",
+		"top":"300px",
+		"opacity":0
+	},600)
+
+	$(".no1 .neirong").animate({
+		"left":"70%",
+		"top":"400px",
+		"opacity":0
+	},600)
+
+
+}
+
+
+// 设置2号页面的入场动画
+var $no2img = $(".no2 img");
+inAnimateArr[2] = function(){
+	//1,花瓣旋转
+	$no2img.eq(7).css({
+		 "top": "50%",		
+    	"left": "50%",
+    	"margin-left": "-185px",
+    	"opacity":0	
+	}).velocity({
+		"opacity":1,
+		"rotateZ":"690deg"
+	},3000)
+
+	//文字从中心扩散
+	$no2img.eq(1).css({
+		 "left":"30%",
+   		 "top": "60%",
+   		 "opacity":0
+
+	}).velocity({
+		 "left":" 10%",
+   		 "top": "300px",
+   		 "opacity":1
+	},1000);
+
+	$no2img.eq(2).css({
+		 "left":"30%",
+   		 "top": "60%",
+   		 "opacity":0
+
+	}).velocity({
+		 "left":" -5%",
+   		 "top": "450px",
+   		 "opacity":1
+	},1000);
+
+	$no2img.eq(3).css({
+		 "left":"30%",
+   		 "top": "60%",
+   		 "opacity":0
+
+	}).velocity({
+		 "left":" 5%",
+   		 "top": "600px",
+   		 "opacity":1
+	},1000);
+
+	$no2img.eq(4).css({
+		 "left":"30%",
+   		 "top": "60%",
+   		 "opacity":0
+
+	}).velocity({
+		 "left":" 70%",
+   		 "top": "600px",
+   		 "opacity":1
+	},1000);
+
+	$no2img.eq(5).css({
+		 "left":"30%",
+   		 "top": "60%",
+   		 "opacity":0
+
+	}).velocity({
+		 "left":" 75%",
+   		 "top": "450px",
+   		 "opacity":1
+	},1000);
+
+	$no2img.eq(6).css({
+		 "left":"30%",
+   		 "top": "60%",
+   		 "opacity":0
+
+	}).velocity({
+		 "left":" 65%",
+   		 "top": "330px",
+   		 "opacity":1
+	},1000);
+	
+	
+}
+
+//2号页面元素离场动画数组
+outAnimateArr[2] = function(){
+
+	//1,花瓣旋转
+	$no2img.eq(7).velocity({
+		"opacity":0,
+		"rotateZ":"990deg"
+	},1000)
+	//文字向中心收缩
+	$no2img.eq(1).velocity({
+		  "left":"30%",
+   		 "top": "60%",
+   		 "opacity":0
+	},700);
+
+	$no2img.eq(2).css({
+		
+	}).velocity({
+		  "left":"30%",
+   		 "top": "60%",
+   		 "opacity":0
+	},700);
+
+	$no2img.eq(3).velocity({
+		 "left":"30%",
+   		 "top": "60%",
+   		 "opacity":0
+	},700);
+
+	$no2img.eq(4).velocity({
+		  "left":"30%",
+   		 "top": "60%",
+   		 "opacity":0
+	},700);
+
+	$no2img.eq(5).velocity({
+		 "left":"30%",
+   		 "top": "60%",
+   		 "opacity":0
+	},700);
+
+	$no2img.eq(6).velocity({
+		"left":"30%",
+   		 "top": "60%",
+   		 "opacity":0
+	},700);
+
+}
+
+inAnimateArr[3]=function(){}
+inAnimateArr[4]=function(){}
+inAnimateArr[5]=function(){}
+inAnimateArr[6]=function(){}
+inAnimateArr[7]=function(){}
+
+
+outAnimateArr[3]=function(){}
+outAnimateArr[4]=function(){}
+outAnimateArr[5]=function(){}
+outAnimateArr[6]=function(){}
+outAnimateArr[7]=function(){}
+
+
+
+
+	//首屏的动画需要等图片全部加载完毕之后再整体显示并开始动画. 
+
+	//判断图片是否加载完毕,为了防止jquery包也没有下载下来, 可以用原生js来判断图片是否加载完毕
+
+	//用一个数组来存放首屏图片的src地址和类名
+
+
+	var R = [
+		{
+			"src": "images/b1_01.png" ,
+			"className" : "b1_01"
+		},
+		{
+			"src": "images/b1_02.png" ,
+			"className" : "b1_02"
+		},
+		{
+			"src": "images/b1_03.png" ,
+			"className" : "b1_03"
+		},
+		{
+			"src": "images/b1_03_btn.png" ,
+			"className" : "b1_03_btn"
+		},
+		{
+			"src": "images/b1_04.png" ,
+			"className" : "b1_04"
+		}
+
+	]
+	//首页
+	var ono0 = document.getElementById("no0")	
+	var count = 0; //计数器
+	for(var i = 0; i<R.length;i++){
+		//图片用构造函数创建出来, 再对image实例设置src,class等属性
+		var image = new Image();
+		image.src = R[i].src;
+		image.className = R[i].className;
+		//图片加载完成执行函数
+		image.onload = function(){
+			//用计数器来判断是否已全部加载完毕
+			count ++;
+			this.style.opacity = 0;
+			ono0.appendChild(this);
+
+			//判断图片是否全部加载完毕
+			//这个判断需要放在onload事件里面, 因为事件是异步的, 如果放在事件外面, count的值是0
+			if(count == 5){
+			
+			//让提示文本消失
+			$("#loading").hide();
+			//调用首屏入场动画
+			inAnimateArr[0]();
+			}
+		}
+	}
+
+
+
+
+
+
+
+
+	var nowpage = 0; //当前页面编号, 全局信号量
+	var oldpage;
+	var lock = false; //锁 , true return, false执行
+	//鼠标滚轮事件
+
+	$(document).mousewheel(function(event,delta){
+		//阻止默认事件
+		event.preventDefault();
+		if(lock) return;
+		lock = true;
+		oldpage = nowpage;
+		nowpage -= delta;
+		if(nowpage>6){
+			nowpage = 0;
+		}else if(nowpage<0){
+			nowpage = 0;
+		}
+		if(nowpage == oldpage){
+			lock = false;
+			return;
+		}
+		//原屏幕的画面离场
+		outAnimateArr[oldpage]();
+		
+		//屏幕滚动
+		$(".content").animate({"top" : -100*nowpage + "%"},700,"easieEaseInOut")
+
+		//新画面的元素入场
+		inAnimateArr[nowpage]();
+
+		setTimeout(function(){
+			lock = false;
+		}, 1000)
+
+
+
+	})
+
+
+
+
+	</script>
+
+
+
+
+
+
+
+	
+</body>
+</html>

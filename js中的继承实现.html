@@ -1,0 +1,274 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+	<title>js中的继承实现方法</title>
+	<!-- 代码着色核心文件 -->
+	<script type="text/javascript" src="js/syntaxhighlighter_3.0.83/src/shCore.js"></script> 
+	<!-- 代码着色匹配代码类型的文件 -->
+	<script type="text/javascript" src="js/syntaxhighlighter_3.0.83/scripts/shBrushJScript.js"></script>
+	<!-- 代码高亮的css样式文件 -->
+	<link type="text/css" rel="stylesheet" href="js/syntaxhighlighter_3.0.83/styles/shCoreEmacs.css"/>
+	<!-- 当前页面的主题 修改theme后面的值就可以直接修改主题了-->
+	<script type="text/theme" theme = "cyborg" id = "theme_strapdown"></script>
+
+	<!-- 自己定义的css样式 -->
+	<!-- <link rel="stylesheet"  type='text/css' href="css/base.css" /> -->
+	
+	<style type="text/css">
+
+	</style>
+</head>
+<body>
+
+<!-- 插入markDown -->
+
+<xmp>
+
+# js中的继承实现方法
+
+### 1. 通过原型链继承实例
+
+设置子类的原型执行父类的实例,实现对父类属性方法的继承.
+
+```
+// 动物类作为父类
+function Animal(name){
+    this.name = "动物";
+    this.colors = ["red", "blue", "green"];
+}
+
+Animal.prototype = {   
+    eat : function(){
+        console.log(this.name + '吃东西');
+    }
+}
+
+// 定义哺乳动物类, 继承动物类
+function Buru(name){
+    this.name = "哺乳动物";
+    this.legs = "4",
+    this.bear = "胎生"
+}
+
+// 通过设置原型链继承动物父类
+Buru.prototype = new Animal();
+
+// 设置原型链的指向后, Buru 构造函数会丢失构造器. 此时可以让构造器重新指向一下
+Buru.prototype.constructor = Buru;
+
+
+// 再添加自身的方法,需要写在继承之后,并且不能使用对象,否则会覆盖继承的父类
+Buru.prototype.feed = function(){
+    console.log(this.name + "通过哺乳方式喂养幼崽")
+} 
+
+var cat = new Buru();
+cat.colors.push("haha"); //修改cat实例上的colors属性会影响到父类.
+var mouse = new Buru(); //创建一个新实例
+console.log(mouse.colors) //mouse的colors属性也添加了 "haha" 项
+
+
+```
+原型链继承能够实现对父类的继承. 
+
+原型链继承方式的缺陷:
+
+1. 当父类的原型链上的属性是引用类型时,子类的实例化对象会引用同一个内存地址上的该属性. 因此修改子类实例的引用类型的属性时会影响到父类.
+
+2. 在创建子类的实例时,无法向父类的构造函数中添加参数.
+
+由于这些问题, 单独的原型继承很少用. 
+
+### 2. 构造函数式继承
+为了解决原型中包含引用类型所带来的继承性问题. 出现了构造函数式继承
+
+```
+// 定义父类
+function Animal(name){
+	this.name = name;
+	// 构造函数继承可以继承父类构造函数中的方法属性.
+	this.battle = function(it){
+        console.log(this.name + "攻击了" + it);
+    }
+}
+
+// 无法继承父类原型上的属性方法
+Animal.prototype = {
+	 move : function(){
+        console.log(this.name + "动");
+    },
+    eat : function(){
+        console.log(this.name + '吃东西');
+    },
+    
+}
+
+// 定义子类
+function Buru(name){
+	// 继承父类的构造函数
+	Animal.call(this,name)
+	this.legs = "4";
+    this.bear = "胎生";
+}
+
+// 创建实例
+var cat = new Buru("猫");
+
+```
+
+构造函数式继承的优势: 
+可以继承父类构造函数中的属性和方法.
+创建实例的时候可以向父类的构造函数中传递参数.
+
+缺点:
+1. 无法继承父类原型中的属性方法
+2. 父类的构造函数中的方法在每次创建子类实例的时候都会执行, 因此无法实现代码的复用.
+
+### 3. 组合继承. 
+也叫做伪经典继承.结合构造函数式继承和原型式继承. 
+通过原型链实现对父类原型上的属性和方法的继承. 通过构造函数继承父类构造函数中的属性方法. 
+
+```
+
+Animal.prototype = {
+ 
+    eat : function(){
+        console.log(this.name + '吃东西');
+    }
+   
+}
+
+// 定义哺乳动物类, 继承动物类
+function Buru(name){
+    // 继承构造函数, 优势可以向父类中传递参数.
+    Animal.call(this,name);
+    this.name = "哺乳动物";
+    this.legs = "4";
+    this.bear = "胎生";
+}
+
+// 通过设置原型链继承动物父类
+Buru.prototype = new Animal();
+
+
+// 再添加自身的方法,需要写在继承之后,并且不能使用对象,否则会覆盖继承的父类
+Buru.prototype.feed = function(){
+    console.log(this.name + "通过哺乳方式喂养幼崽")
+} 
+
+// 设置原型链的指向后, Buru 构造函数会丢失构造器. 此时可以让构造器重新指向一下
+Buru.prototype.constructor = Buru;
+
+var cat = new Buru();
+
+```
+组合式继承
+
+优点:
+
+组合继承避免了原型链和借用构造函数的缺陷，融合了它们的优点，成为 JavaScript 中最常用的继承模式。而且， instanceof 和 isPrototypeOf()也能够用于识别基于组合继承创建的对象。
+
+缺点:
+
+父类的构造函数会执行两遍.
+
+### 4. 原型式继承.
+
+```
+function object(o){
+function F(){}
+F.prototype = o;
+return new F();
+}
+```
+
+在 object()函数内部，先创建了一个临时性的构造函数，然后将传入的对象作为这个构造函数的原型，最后返回了这个临时类型的一个新实例。从本质上讲， object()对传入其中的对象执行了一次浅复制。来看下面的例子。
+
+
+```
+var person = {
+name: "Nicholas",
+friends: ["Shelby", "Court", "Van"]
+};
+var anotherPerson = object(person);
+anotherPerson.name = "Greg";
+anotherPerson.friends.push("Rob");
+var yetAnotherPerson = object(person);
+yetAnotherPerson.name = "Linda";
+yetAnotherPerson.friends.push("Barbie");
+alert(person.friends); //"Shelby,Court,Van,Rob,Barbie"
+
+```
+
+克罗克福德主张的这种原型式继承，要求你必须有一个对象可以作为另一个对象的基础。如果有这么
+一个对象的话，可以把它传递给 object()函数，然后再根据具体需求对得到的对象加以修改即可。在这
+个例子中，可以作为另一个对象基础的是 person 对象，于是我们把它传入到 object()函数中，然后该
+函数就会返回一个新对象。这个新对象将 person 作为原型，所以它的原型中就包含一个基本类型值属性
+和一个引用类型值属性。这意味着 person.friends 不仅属于 person 所有，而且也会被 anotherPerson
+以及 yetAnotherPerson 共享。实际上，这就相当于又创建了 person 对象的两个副本。
+ECMAScript 5 通过新增 Object.create()方法规范化了原型式继承。这个方法接收两个参数：一
+个用作新对象原型的对象和（可选的）一个为新对象定义额外属性的对象。在传入一个参数的情况下，
+Object.create()与 object()方法的行为相同。
+
+```
+var person = {
+name: "Nicholas",
+friends: ["Shelby", "Court", "Van"]
+};
+var anotherPerson = Object.create(person);
+anotherPerson.name = "Greg";
+anotherPerson.friends.push("Rob");
+var yetAnotherPerson = Object.create(person);
+yetAnotherPerson.name = "Linda";
+yetAnotherPerson.friends.push("Barbie");
+alert(person.friends); //"Shelby,Court,Van,Rob,Barbie
+```
+
+Object.create()方法的第二个参数与Object.defineProperties()方法的第二个参数格式相
+同：每个属性都是通过自己的描述符定义的。以这种方式指定的任何属性都会覆盖原型对象上的同名属
+性。例如：
+```
+var person = {
+name: "Nicholas",
+friends: ["Shelby", "Court", "Van"]
+};
+```
+
+
+
+
+
+
+
+</xmp>
+
+
+
+<!-- js代码 -->
+<script type="text/javascript">
+
+
+	
+</script>
+
+<!-- //markdown格式化文件 -->
+<script src="js/strapdown/strapdown_xiugai.js"></script>
+
+<!-- SyntaxHighlighter 代码着色执行文件 -->
+<script type="text/javascript">SyntaxHighlighter.all();</script>
+<!-- 生成目录 -->
+<script type="text/javascript" src="js/buildCatalog.js"></script>
+
+</body>
+</html>
+
+
+<!-- 代码自动高亮模板 -->
+<!-- <div class="daima">
+	<script type="syntaxhighlighter" class="brush: js;">
+
+	
+	</script>
+</div>
+ -->

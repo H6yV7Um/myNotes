@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+</head>
+<body>
+<style type="text/css">
+.demo {
+	overflow: hidden;
+}
+.left {
+	height: 100px;
+	width: 20%;
+	background: red;
+	float: left;
+	padding-bottom: 500px;
+	margin-bottom: -500px;
+	background-color: red;
+}
+.main {
+	width: 50%;
+	height: 400px;
+	background: green;
+	float: left;
+	padding-bottom: 500px;
+	margin-bottom: -500px;
+}
+.right {
+	height: 300px;
+	width: 30%;
+	background: blue;
+	float: left;
+	padding-bottom: 500px;
+	margin-bottom: -500px;
+}
+</style>
+<!-- 容器的高度统一，一最高为准，宽度自适应 -->
+<div class="demo">
+	<div class="left"></div>
+	<div class="main"></div>
+	<div class="right"></div>
+</div>
+</body>
+</html>

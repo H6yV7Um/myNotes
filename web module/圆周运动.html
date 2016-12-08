@@ -1,0 +1,326 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>圆周运动</title>
+	
+	<style type="text/css">	
+
+	*{
+		margin: 0;
+		padding: 0;
+	}
+	body{
+		width: 100%;
+		height: 100%;
+		background-color: #F0EDB8;
+		overflow: hidden;
+	}
+	div{
+	
+
+	}
+	
+	
+	h3{
+		color: rgb(105,101,63);
+		position: absolute;
+		top: 100px;
+		left: 40px;
+		line-height: 150%;
+	}
+	p{
+		color: rgb(105,101,63);
+		position: absolute;
+		top: 130px;
+		left: 40px;
+		line-height: 150%;
+	}
+
+	.Center{
+		background-color:#45535E;
+		width: 150px;
+		height: 150px;
+		position: absolute;
+		left: 450px;
+		top: 350px;
+		border-radius: 50%;
+		font-size: 25px;
+		line-height: 150px;
+		text-align: center;
+		color: #AEBBC3;
+		}
+	
+	.Center2{
+		background-color:#45535E;
+		width: 200px;
+		height: 200px;
+		position: absolute;
+		left: 426px;
+   		top: 325px;
+		border-radius: 50%;
+		opacity:0.3;
+	}
+
+	.Center3{
+		width: 300px;
+		height: 300px;
+		position: absolute;
+		left: 379px;
+    	top: 275px;
+		border-radius: 50%;
+		border: 2px solid #fff;
+	}
+
+	.Center4{
+		width: 500px;
+		height: 500px;
+		position: absolute;
+	 	left: 277px;
+    	top: 177px;
+		border-radius: 50%;
+		border: 2px solid #fff;
+	}
+
+	.no0_in,.no1_in,.no2_in,.no3_in{
+		width: 70px;
+		height: 70px;
+		border-radius: 50%;
+		background-color: #ff0;
+		position: absolute;
+		top: 400px;
+		left: 350px;
+		opacity: 0.7;
+		border: 10px solid #ccc;
+		}
+
+	.no0_in{
+			background-color: #6595E1;
+			color: #B6DCFF;
+		}
+		.no1_in{
+			background-color: #6A9993;
+			color: #D4F4F1;
+		}
+
+		.no2_in{
+			background-color: #724947;
+			color: #FFE3E1;
+		}
+
+		.no3_in{
+			background-color: #01BB96;
+			color: #97FFFF;
+		}
+
+		.no0_out,.no1_out,.no2_out,.no3_out{
+			width: 70px;
+			height: 70px;
+			border-radius: 50%;
+			background-color: #ff0;
+			position: absolute;
+			top: 400px;
+			left: 200px;
+			opacity: 0.5;
+			border: 10px solid orange;
+		}
+
+		.no0_out{
+			background-color: #F9B1E3;
+			color: #704163;
+		}
+		.no1_out{
+			background-color: #A2EB78;
+			color: #396319;
+		}
+
+		.no2_out{
+			background-color: #EC3E63;
+			color: #FFE3E1;
+		}
+
+		.no3_out{
+			background-color: #FF8266;
+			color: #97FFFF;
+		}
+	
+	
+
+	</style>
+
+</head>
+<body>
+	<h3>圆周运动</h3>
+	<p>圆周运动采用的是定时器来设置每帧 <br />
+		画面元素的top,left值 <br /> 
+		用原生js实现的效果, 不依赖任何库 <br />
+		没有兼容性问题  <br />
+		创建了每个元素做圆周运动的构造函数 <br />
+		直接创建该构造函数的实例即可创建新的运动效果 <br />
+
+	</p>
+	<div class="Center2" id=""></div>
+	<div class="Center3" id=""></div>
+	<div class="Center4" id=""></div>
+	<div class="Center" id="Center">
+		古九の角皿
+	</div>
+	
+	
+	<div class="no0_in" id="no0_in"></div>
+	<div class="no1_in" id="no1_in"></div>
+	<div class="no2_in" id="no2_in"></div>
+	<div class="no3_in" id="no3_in"></div>
+	<div class="no0_out" id="no0_out"></div>
+	<div class="no1_out" id="no1_out"></div>
+	<div class="no2_out" id="no2_out"></div>
+	<div class="no3_out" id="no3_out"></div>
+
+
+	<script type="text/javascript">
+
+	var no0_in = document.getElementById("no0_in");
+	var no1_in = document.getElementById("no1_in");
+	var no2_in = document.getElementById("no2_in");
+	var no3_in = document.getElementById("no3_in");
+	var no0_out = document.getElementById("no0_out");
+	var no1_out = document.getElementById("no1_out");
+	var no2_out = document.getElementById("no2_out");
+	var no3_out = document.getElementById("no3_out");
+
+
+	var no0_in = new cirMove({
+		obj : no0_in,
+		time : 3000,
+		r : 150,
+		x_cir : 490,
+		y_cir : 390,
+		deg   : 45
+	}) 
+
+	var no1_in = new cirMove({
+		obj : no1_in,
+		time : 3000,
+		r : 150,
+		x_cir : 490,
+		y_cir : 390,
+		deg  : 130
+	}) 
+
+	var no2_in = new cirMove({
+		obj : no2_in,
+		time : 3000,
+		r : 150,
+		x_cir : 490,
+		y_cir : 390,
+		deg  : 225
+	}) 
+
+	var no3_in = new cirMove({
+		obj : no3_in,
+		time : 3000,
+		r : 150,
+		x_cir : 490,
+		y_cir : 390,
+		deg  : 315
+	}) 
+
+
+	var no0_out = new cirMove({
+		obj : no0_out,
+		time : 7000,
+		r : 270,
+		x_cir : 490,
+		y_cir : 390,
+		deg  : 0
+	}) 
+
+	var no1_out = new cirMove({
+		obj : no1_out,
+		time : 7000,
+		r : 270,
+		x_cir : 490,
+		y_cir : 390,
+		deg  : 90
+	}) 
+
+	var no2_out = new cirMove({
+		obj : no2_out,
+		time : 7000,
+		r : 270,
+		x_cir : 490,
+		y_cir : 390,
+		deg  : 180
+	}) 
+
+	var no3_out = new cirMove({
+		obj : no3_out,
+		time : 7000,
+		r : 270,
+		x_cir : 490,
+		y_cir : 390,
+		deg  : 270
+	}) 
+	
+
+	//建立圆周运动构造函数
+	//传入参数
+	/*{
+		obj  : obj, //运动的对象,js原生对象
+		time : time, // 运动一圈的时间
+		r    :  r ,  // 运动的半径
+		x_cir : 100,  // 圆心位置
+		y_cir : 100， //圆心位置
+		deg   ： 0   // 起始角度
+	}*/
+
+	function cirMove(argsJson){
+		//运动的对象
+		var obj = argsJson.obj;
+		//运动一圈的时间 单位ms
+		var time = argsJson.time; 
+		//圆心位置
+		var x_cir = argsJson.x_cir;
+		var y_cir = argsJson.y_cir; 
+		//起始角度
+		var deg_ori = argsJson.deg;
+
+		//当前帧所在的位置
+		var x_now , y_now;
+
+		//运动半径
+		var r = argsJson.r ; 
+
+		//每帧运动的角度
+		var deg_perframe = 1;
+
+		//总帧数
+		var frames_num = 360/deg_perframe;
+
+		//每帧的时间
+		var interval = time / frames_num;
+		var deg_now =  deg_ori ? deg_ori : 0 ; //当前运动角度, 信号量
+
+		setInterval(function(){
+		//当前角度
+		deg_now += deg_perframe ;
+		
+		//当前帧所在的位置
+		x_now = r * Math.cos(degreeToRad(deg_now)) + x_cir ;
+		y_now = r * Math.sin(degreeToRad(deg_now)) + y_cir;
+		obj.style.left = x_now + "px";
+		obj.style.top = y_now + "px";
+
+		},interval)
+
+	}
+
+	//弧度角度转化函数
+	function degreeToRad(degree){
+		return degree*Math.PI/180
+	}
+
+	</script>
+	
+</body>
+</html>

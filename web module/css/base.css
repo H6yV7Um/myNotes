@@ -1,0 +1,108 @@
+body{
+		background-color: #232728;
+		color: #fff;
+		margin-left: 20px;
+		font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
+		height: 3000px;
+	}
+	.red{
+		color: red;
+	}
+	.cu{
+		font-weight: bold;
+	}
+	.f48{
+		font-size: 48px;
+	}
+	.f32{
+		font-size: 32px;
+	}
+	.f24{
+		font-size: 24px;
+	}
+	.f22{
+		font-size: 22px;
+	}
+	.f20{
+		font-size: 20px;
+	}
+	.f18{
+		font-size: 18px;
+	}
+	.f16{
+		font-size: 16px;
+	}
+	.f14{
+		font-size: 14px;
+	}
+	.h10{
+		height: 10px;
+	}
+	.h20{
+		height: 20px;
+	}
+	.h30{
+		height: 30px;
+	}
+
+	/*边框*/
+	.bd{
+		border: 5px solid #999;
+	}
+	
+	/*margin*/
+	.mg{
+		margin: 10px 0;
+	}
+	
+	/*padding*/
+	.pd{
+		padding: 10px 0 10px 10px;
+	}
+
+	/*背景*/
+
+
+	
+
+	div.daima{
+		width: 700px;
+		border: 5px solid #999;
+	}
+	
+	div.daima2{
+		width: 700px;
+		border: 5px solid #999;
+		font-size: 20px;
+		padding: 10px 0px 10px 20px;
+
+	}
+
+	div.jieguo{
+		width: 690px;
+		padding: 10px 0 10px 10px;
+		border: 5px solid #999;
+	}
+	a.btn{
+		display: block;
+		width: 150px;
+		height: 40px;
+		margin: 10px;		
+		line-height: 40px;
+		text-align: center;
+		background-color: #ccc;
+		text-decoration: none;
+		color: #000;
+		border: 3px solid #333;
+		border-radius: 10px;
+	}
+	a.btn:hover{
+		background-color: #eee;
+	}
+
+	.bold{
+		font-weight: bold;
+	}
+
+
+
