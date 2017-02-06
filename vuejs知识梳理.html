@@ -77,8 +77,8 @@ ViewModel是Vue.js的核心，它是一个Vue实例。Vue实例是作用于某�
 	})
 
 //方法2 . 用变量来保存数据
-//给vue的data属性增加属性值后,都会绑定到vue的实例对象上. 如果是用变量中转数据的, 那么vue的daa这个属性值与obj变量中的值是全等的, 
-// 修改vue的这ata属性值, 对应的obj对象中的该属性值也会变化
+//给vue的data属性增加属性值后,都会绑定到vue的实例对象上. 如果是用变量中转数据的, 那么vue的data这个属性值与obj变量中的值是全等的, 
+// 修改vue的这data属性值, 对应的obj对象中的该属性值也会变化
 
 	// obj变量中的值
 	var obj = {
@@ -279,6 +279,28 @@ var demo = new Vue({
 	}
 })
 ```
+
+v-bind:class 指令可以与普通的 class 特性共存：
+
+```
+<div class="static" v-bind:class="{ 'class-a': isA, 'class-b': isB }"></div>
+```
+
+#### 2.5.3 可以用三元表达式：
+```
+<div v-bind:class="[classA, isB ? classB : '']">
+```
+
+此例始终添加 classA，但是只有在 isB 是 true 时添加 classB 。
+
+不过，当有多个条件 class 时这样写有些繁琐。在 1.0.19+ 中，可以在数组语法中使用对象语法：
+
+#### 2.5.4 数组中使用对象语法
+
+```
+<div v-bind:class="[classA, { classB: isB, classC: isC }]">
+```
+
 #### 2.6  style 样式的绑定
 
 语法：v-bind:style=“{key： value}”
@@ -363,6 +385,24 @@ v 在vue的data中的变量. 是对应的属性值;
 
 
 ```
+
+#### 2.6.3 直接绑定到一个样式对象
+
+模板更清晰：
+
+```
+<div v-bind:style="styleObject"></div>
+data: {
+  styleObject: {
+    color: 'red',
+    fontSize: '13px'
+  }
+}
+```
+
+当 v-bind:style 使用需要厂商前缀的 CSS 属性时，如 transform，Vue.js 会自动侦测并添加相应的前缀。
+
+
 ### 3. Vue.js的常用指令
 
 Vue.js的指令是以v-开头的，它们作用于HTML元素，指令提供了一些特殊的特性，将指令绑定在元素上时，指令会为绑定的目标元素添加一些特殊的行为，我们可以将指令看作特殊的HTML特性（attribute）。
