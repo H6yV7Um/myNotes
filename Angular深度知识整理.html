@@ -305,13 +305,64 @@ Scope.prototype = {
 >* $root来访问跟作用域
 >* $parent来访问父作用域
 >* $childHead（$childTail）访问头（尾）子作用域
->* prevSibling（$nextSibling）访问前（后）一个兄弟作用域
+>* $$prevSibling（ $nextSibling ）访问前（后）一个兄弟作用域
 
 这样的关系便形成了一个作用域树，通过它便可以完成作用域的向上（下）的遍历，从而实现后面的消息传递，$emit（向上冒泡），broadcast（向下广播）
 
 所有的作用域都引用同一个$$asyncQueue和$$postDigestQueue
 
+#### 5.1.2 父子作用域中变量的影响
 
+```
+<!-- dom 结构 -->
+<div ng-app="app">
+  <div ng-controller="parentCtrl">
+    <h3>parentCtrl</h3>
+    <input type="text" ng-model="msg">
+    <input type="text" ng-model="obj.msg">
+    <p>{{msg}}</p>
+    <p>{{obj}}</p>
+    <div ng-controller="childCtrl1">
+      <hr>
+      <h3>childCtrl1</h3>
+      <input type="text" ng-model="msg">
+      <input type="text" ng-model="obj.msg">
+      <p>{{msg}}</p>
+      <p>{{obj}}</p>
+    </div>
+    <div ng-controller="childCtrl2">
+      <hr>
+      <h3>childCtrl2</h3>
+      <input type="text" ng-model="msg">
+      <input type="text" ng-model="obj.msg">
+      <p>{{msg}}</p>
+      <p>{{obj}}</p>
+    </div>
+    <div ng-controller="childCtrl3">
+      <hr>
+      <h3>childCtrl3</h3>
+      <input type="text" ng-model="msg">
+      <input type="text" ng-model="obj.msg">
+      <p>{{msg}}</p>
+      <p>{{obj}}</p>
+    </div>
+  </div>
+</div>
+
+```
+* 通过下图可以看出, 子作用域的原型指向父作用域. 
+
+![angular-scope-继承](images/chatu/angular-scope-继承.png)
+
+* 对于值类型 $scope.msg = '123'; 
+
+>1. 子未定义, 父定义. 由于作用域会继承, 因此如果子作用域未定义该值时, 会到父作用域中寻找该值,.
+>2. 子定义, 父定义. 如果子作用域定义该值后, 会优先取自己作用域中的该值. 
+
+* 对于引用类型 $scope.obj.msg = '123'
+
+>1. 子未定义, 父定义. 此时子作用域取父作用域中的该值, 由于是引用类型, 之后无论更改子作用域还是更改父作用域, 该值都会同步. 
+>2. 子定义, 父定义. 此时子作用域会取自己作用域中的该值, 之后修改父子作用域相互不会有影响.
 
 ### 6. 指令
 
@@ -410,6 +461,20 @@ $scope.$digest()
 
 尽量不要再controller中使用$digest/$apply，这样的话测试起来会比较困难。
 
+
+### 9. 指令directive中的 scope
+
+#### 9.1 指令scope属性的3种情况
+
+scope 有3种取值.
+
+>1. scope: true, 此时创建新的作用域. 即子作用域通过原型链继承父作用域. 如果在同一个 DOM 节点上有多个 directive 都要创建新 scope，则只有一个新 Scope 会创建。
+>2. scope: false, 默认false. 此时不创建新的作用域, 此时指令中的作用域与父作用域处于同一个作用域中. 
+>3. scope: {}, 此时指令会创建一个独立的作用域, 不会通过原型继承父作用域, 即子作用域中定义的属性不会读取父作用域中的值. 为对象时有3个值,  '=' 双向绑定, '@' 单向绑定, '&' 绑定父作用域中的表达式(如函数);
+
+#### 9.2 指令中的transclude中的作用域
+
+指令中的 transclude 引入的元素会创建一个新的scope, 并继承父作用域. 在transclude中的dom元素中通过 $parent.msg 可以获取父作用域中的变量值. 
 
 
 
