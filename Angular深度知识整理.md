@@ -1,28 +1,3 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
-<head>
-	<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-	<title>Angular深度知识整理</title>
-	<!-- 代码着色核心文件 -->
-	<script type="text/javascript" src="js/syntaxhighlighter_3.0.83/src/shCore.js"></script> 
-	<!-- 代码着色匹配代码类型的文件 -->
-	<script type="text/javascript" src="js/syntaxhighlighter_3.0.83/scripts/shBrushJScript.js"></script>
-	<!-- 代码高亮的css样式文件 -->
-	<link type="text/css" rel="stylesheet" href="js/syntaxhighlighter_3.0.83/styles/shCoreEmacs.css"/>
-	<!-- 当前页面的主题 修改theme后面的值就可以直接修改主题了-->
-	<script type="text/theme" theme = "cyborg" id = "theme_strapdown"></script>
-
-	<!-- 自己定义的css样式 -->
-	<!-- <link rel="stylesheet"  type='text/css' href="css/base.css" /> -->
-	
-	<style type="text/css">
-
-	</style>
-</head>
-<body>
-<xmp>
-
-
 # Angular深度知识整理
 
 
@@ -34,7 +9,7 @@ $destroy是Angular用来回收资源的,当创建scope时,就会创建一个未�
 
 当视图中dom删除后对应的scope也会被删除, 从而触发$destroy事件. 可以通过监听视图的$destroy 执行想要的操作
 
-```
+```html
 <!-- html部分 -->
 
 <p>
@@ -107,7 +82,7 @@ $destroy是Angular用来回收资源的,当创建scope时,就会创建一个未�
 
 #### 2.1. $scope是用于联系控制器与视图的桥梁.
 
-<img src="images/chatu/angularScope1.png" alt="" />
+[!images/chatu/angularScope1.png](images/chatu/angularScope1.png)
 
 有了 $scope 这样一个桥梁,应用的业务代码可以都在 controller 中,而数据都存放在controller 的 $scope 中.
 
@@ -160,7 +135,7 @@ require 可以获取指令所在元素内部或同级的指令, 要获取父级�
 可以引用 ngModel 指令,则能获取该指令所在元素中的 $viewValue 等值
 
 
-```
+```html
 <add minor class="col-md-2 col-md-offset-3">
           <div >次数: {{ count }}</div>
           <figure></figure>
@@ -253,7 +228,8 @@ $emit（向上冒泡），broadcast（向下广播）. $on设置监听事件
 
 scope 类的属性方法
 
-```
+```javascript
+
 function Scope() {
   // 省略属性定义
 }
@@ -287,6 +263,7 @@ Scope.prototype = {
 
   $broadcast: function(name, args) {...}
 };
+
 ```
 
 #### 5.1 scope作用域树
@@ -295,7 +272,8 @@ Scope.prototype = {
 
 对于孤立作用域是作为没有任何继承关系的单独作用域存在.
 
-<img src="images/chatu/scope1.jpg" alt="" />
+[!images/chatu/scope1.jpg](images/chatu/scope1.jpg)
+
 
 从这张图里面我们可以看出的不仅是作用域的继承关系还有作用域之间及父子兄弟关系：
 
@@ -313,7 +291,7 @@ Scope.prototype = {
 
 #### 5.1.2 父子作用域中变量的影响
 
-```
+```html
 <!-- dom 结构 -->
 <div ng-app="app">
   <div ng-controller="parentCtrl">
@@ -400,7 +378,9 @@ $emit会向上冒泡到根作用域. 可以通过设置event.stopPropagation 在
 watchExpression和listener可以是一个string，也可以是一个function（scope）
 
 $watch 用法
-```
+
+```javascript
+
 //$scope.$watch(<function/expression>, <handler>);
 //  $watch函数会返回一个释放$watch绑定的unbind函数。所以当我们不再需要watch改变的时候，我们可以调用这个函数释放$watch。
 var unbind = $scope.$watch('foo', function(newVal, oldVal) {
@@ -412,6 +392,7 @@ $scope.$watch(function() {
 }, function(newVal, oldVal) {
     console.log(newVal, oldVal);
 });
+
 ```
 
 $watch表达式在每次调用了$digest方法之后都会重新算值，如果返回值发生了改变，listener就会执行。在判断newValue和oldValue是否相等时，会递归的调用angular.equals方法。在保存值以备后用的时候调用的是angular.copy方法。listener在执行的时候，可能会修改数据从而触发其他的listener或者自己直到没有检测到改变为止。Rerun Iteration的上限是 10 次，这样能够保证不会出现死循环的情况。 
@@ -426,7 +407,7 @@ $watch表达式在每次调用了$digest方法之后都会重新算值，如果�
 
  $digest()的调用方法
 
-```
+```javascript
 $scope.$digest()
 ```
 
@@ -476,54 +457,25 @@ scope 有3种取值.
 
 指令中的 transclude 引入的元素会创建一个新的scope, 并继承父作用域. 在transclude中的dom元素中通过 $parent.msg 可以获取父作用域中的变量值. 
 
+### 10. 循环依赖注入的解决方法
+
+如果两个服务或控制器等循环依赖注入的话会报错, 此时可以通过 $injector来手动注入.
+
+```
+angular.module('app', [])
+// 若直接注入 factory2 会造成循环注入, 此时可以通过 $injector 来动态的注入服务
+.factory('factory1', function ($injector) {
+    return function () {
+      console.log('1111', $injector.get('factory2'));
+      console.log('I am factory1111');
+    }
+  })
+  .factory('factory2', function (factory1) {
+    return function () {
+      console.log('I am factory22222');
+    };
+  })  
+
+```
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</xmp>
-
-<script type="text/javascript" src="js/lib/angular.js"></script>
-
-<!-- js代码 -->
-<script type="text/javascript">
-
-
-	
-</script>
-
-<!-- //markdown格式化文件 -->
-<script src="js/strapdown/strapdown_xiugai.js"></script>
-
-<!-- SyntaxHighlighter 代码着色执行文件 -->
-<script type="text/javascript">SyntaxHighlighter.all();</script>
-<!-- 生成目录 -->
-<script type="text/javascript" src="js/buildCatalog.js"></script>
-
-</body>
-</html>
-
-
-<!-- 代码自动高亮模板 -->
-<!-- <div class="daima">
-	<script type="syntaxhighlighter" class="brush: js;">
-
-	
-	</script>
-</div>
- -->

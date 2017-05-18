@@ -135,4 +135,22 @@ function stopEvent (e) {
 
 ```
 
+### 装饰器模式 Decorator Pattern
+
+参考资料: [https://en.wikipedia.org/wiki/Decorator_pattern](https://en.wikipedia.org/wiki/Decorator_pattern)
+
+In object-oriented programming, the decorator pattern (also known as Wrapper, an alternative naming shared with the Adapter pattern) is a design pattern that allows behavior to be added to an individual object, either statically or dynamically, without affecting the behavior of other objects from the same class.[1] The decorator pattern is often useful for adhering to the Single Responsibility Principle, as it allows functionality to be divided between classes with unique areas of concern.
+
+用来动态的给对象添加新的行为属性而不修改原有的对象. 增加一个修饰类来包裹原来的类. 包裹的方式通常将原有的类作为修饰类的构造函数的参数. 通过装饰类来实现新的功能.  但是原有的类依然可以直接进行调用. 修饰类必须和原有的类有相同的接口.
+
+修饰类是类继承的另一种选择. 类继承需要在编译时增加行为, 修饰类则在运行时增加行为. 
+
+优势: 对于需要编译的语言, 类不能在运行时被创建, 通过装饰器模式可以实现在运行时对类的适配修改. 
+
+
+
+
+
+
+
 

@@ -1,31 +1,3 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
-<head>
-	<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-	<title>ES6 知识整理</title>
-	<!-- 代码着色核心文件 -->
-	<script type="text/javascript" src="js/syntaxhighlighter_3.0.83/src/shCore.js"></script> 
-	<!-- 代码着色匹配代码类型的文件 -->
-	<script type="text/javascript" src="js/syntaxhighlighter_3.0.83/scripts/shBrushJScript.js"></script>
-	<!-- 代码高亮的css样式文件 -->
-	<link type="text/css" rel="stylesheet" href="js/syntaxhighlighter_3.0.83/styles/shCoreEmacs.css"/>
-	<!-- 当前页面的主题 修改theme后面的值就可以直接修改主题了-->
-	<script type="text/theme" theme = "cyborg" id = "theme_strapdown"></script>
-
-	<!-- 自己定义的css样式 -->
-	<!-- <link rel="stylesheet"  type='text/css' href="css/base.css" /> -->
-	
-	<style type="text/css">
-
-	</style>
-</head>
-<body>
-
-<!-- 插入markDown -->
-
-<xmp>
-
-##### 
 # ES6知识梳理
 
 ### 1. 编译方法
@@ -35,7 +7,8 @@ ES6可以通过浏览器端编译以及服务器端编译
 浏览器端编译时用的traceur库编译
 
 浏览器端编译引用traceur.js，和traceur-bootstrap.js两个包
-```
+
+```html
 <script type="text/javascript" src="lib/traceur.js"></script>
 <script type="text/javascript" src="lib/traceur-bootstrap.js"></script>
 ```
@@ -43,7 +16,8 @@ ES6可以通过浏览器端编译以及服务器端编译
 ### 2. Let 定义块级作用域变量
 let用来定义块作用域变量。 定义的变量在块级作用域中有效
 作用：比如在循环中，let定义的变量，会在块作用域下保留下，访问的是就是当前循环的变量值。
-```
+
+```javascript
 // 使用var定义变量
 var arr = [];
 for (var i = 0; i < 5; i++) {
@@ -64,7 +38,9 @@ for (let j = 0; j < 5; j++) {
 // 调用arr2[2]查看j的结果
 arr2[2](); // 输出2
 arr2[3]() // 输出3
+
 ```
+
 ### const 定义常量
 
 常量：（静态变量） 一旦被定义就不能再被修改
@@ -74,7 +50,7 @@ arr2[3]() // 输出3
 >3. 在定义常量的前面，是不能访问到常量的，因此我们通常要将常量定义在文件的最前面
 >4. 常量是不能被重复的定义的，这是为了保证常量定义使用时候的安全型。
 
-```
+```javascript
 // 对于静态变量可以用const定义， 防止被修改。 
 const PI = Math.PI;
 PI = 3 //常量被修改时会报错
@@ -88,15 +64,6 @@ const PI = 5 // 报错，同一个常量不能被重复定义。
 
 console.log(PI);
 ```
-```
-
-```
-
-```
-
-```
-
-
 ### 3. 字符串方法拓展
 #### 3.1 startsWith
 
@@ -116,7 +83,7 @@ console.log(PI);
 第一个参数表示被包含的字符串
 第二个参数判断的位置
 
-```
+```javascript
 //创建一个字符串
 var str = '这是一个神奇的网站！';
 
@@ -147,8 +114,8 @@ console.log(/个/.test(str.slice(3)))
 可以把模板写在 \` \` 之中。 可以换行书写
 能够使用${表达式} 语法
 
-```
 
+```javascript
 
 //我们喜欢明星是： 
 var star = 'me';
@@ -199,21 +166,23 @@ document.getElementById('app').innerHTML = tpl.repeat(2);
 
 #### 4.2 repeat方法， 重复字符串n次
 
-```
+```javascript
 var str = "我是原字符串";
 var str_new = str.repeat(3); // 字符串重复3次,一共得到3份字符串
+
 ```
 
 #### 4.3 raw 方法
 
 返回原始字符串，该方法不会将字符串中转义字符转义
 
-```
+```javascript
 // raw不会将转义字符转义，它是String对象的一个方法，所以使用时候要通过String对象
 console.log(`success \n 111`)
 var a = String.raw`success \n 111`
 console.log(a === 'success \\n 111')
 console.log('success \\n 111')
+
 ```
 
 ### 5. Array对象的扩展
@@ -226,7 +195,7 @@ console.log('success \\n 111')
 第二个参数表示索引值
 返回值会保留最终结果，如果没有返回值，那么from函数直接结果就是由undefined构成的一个新数组
 
-```
+```html
 //html 结构
 <ul>
 	<li>1 1 1</li>
@@ -234,6 +203,9 @@ console.log('success \\n 111')
 	<li>3 3 3</li>
 </ul>
 
+```
+
+```javascript
 //js部分
 // 获取页面中的所有li元素
 var lis = document.querySelectorAll('ul li');	// 返回的结果是一个类数组对象
@@ -273,7 +245,8 @@ Array当传递参数不同，传递的参会表示不同的含义，如果一参
 Of为了解决Array构造的参数不同得到结果行为不一致的问题
 参数表示数组的成员，不论参数十几个
 
-```
+```javascript
+
 // 源生js创建数组
 console.log(Array().length)	// 得到的是一个空数组
 console.log(Array(5).length) 	// 得到的是一个有5个undefine构成数组
@@ -284,11 +257,13 @@ console.log(Array.of())  \\ []
 console.log(Array.of(5)) \\ [5]
 console.log(Array.of(5, 6)) \\ [5, 6]
 console.log(Array.of(5, 6, 7)) \\ [5, 6, 7]
+
 ```
 
 #### 5.3 find
 获取符合条件的第一个数组成员值
-```
+
+```javascript
 // 东北F4
 var arr = ['刘能', '赵四', '小沈阳', '宋小宝'];
 
@@ -310,7 +285,7 @@ var res = arr.find(function (value, index, arr) {
 这两个方法与filter的区别是，filter是贪婪的搜索，这个是非贪婪搜索，
 
 
-```
+```javascript
 // 东北F4
 var arr = ['刘能', '赵四', '小沈阳', '宋小宝'];
 
@@ -320,6 +295,7 @@ var res = arr.findIndex(function (value, index, arr) {
 })
 
 console.log(res);
+
 ```
 #### 5.5 keys; values; entries
 
@@ -330,7 +306,8 @@ values
 entries
 保留的是，将数组成员的索引值以及数组成员的值，保留在一个新数组中，并把这些新数组保留在一数组返回的是一个数组迭代器对象
 
-```
+
+```javascript
 // 东北F4
 var arr = ['刘能', '赵四', '小沈阳', '宋小宝'];
 
@@ -368,7 +345,7 @@ Es6为定义对象拓展了很多语法
 2 在定义对象时候，我们可以对对象的属性应用表达式
 3 在定义对象时候，如果对象属性名称与对象属性对应的方法名称相同，我们可以省略属性以及function，像定义类中的方法一样定义这个属性方法
 
-```
+```javascript
 // 返回一个{x：10， y：20}；
 function Point(x, y) {
 	// ES6允许我们直接引入变量，不用对对象添加同名属性
@@ -427,7 +404,7 @@ Assign接收多个参数，
 注意，该方法是对对象属性的一个浅复制，是对对象的一个直接引用，jquery中我们可以对extend进行深复制，
 
 
-```
+```javascript
 let obj1 = {
 	a: 'red'
 };
@@ -456,7 +433,8 @@ console.log(obj1.c === obj3.c) //true
 不论Symbol传递任何字符串参数，得到的结果都是表示一个独一无二的数据。
 通过typeof可以判断该数据的原始数据类型是symbol
 该数据类型可以通过toString转化成字符串
-```
+
+```javascript
 var a = 'color';
 var b = 'color';
 obj = {
@@ -491,7 +469,7 @@ console.log(obj) //Object {Symbol(color): "red", Symbol(color): "green"}
 语法new Proxy(代理对象，屏障对象)
 这个屏障比较特殊，方法不是可以任意定的，我们只能通过get来获取代理对象的信息，set来设置原始对象的信息，但是，他们不是直接处理对象的，在处理之前会过滤这些人为操作
 
-```
+```javascript
 var Star = {
 	name: "zhang",
 	msg: ''
@@ -532,7 +510,7 @@ console.log(Star)  // Object {name: "zhang", msg: "hello"}
 #### 9.1 默认参数
 我们可以对参数直接用=赋值一个默认值，这样，当用户使用函数时候，不传递参数也有参数值，就是默认参数值
 
-```
+```javascript
 // ES6允许我们在定义参数时候，直接通过=赋值默认参数
  function setFontColor(color = 'green') {
  	// 将h1的字体设置成参数颜色
@@ -549,7 +527,7 @@ console.log(Star)  // Object {name: "zhang", msg: "hello"}
 这里num类似arguments，但是避免了对arguments的依赖（在箭头函数中是不允许使用arguments，此时我们可以通过rest参数语法来实现）
 这种运算符，是将参数转化成一个类数组对象
 
-```
+```javascript
 function add (num1, num2,  ...num) {
 	// 在里面判断num来处理数据
 	// for (var i of num) {
@@ -559,11 +537,11 @@ function add (num1, num2,  ...num) {
 }
 
 ```
- ... 语法也可以用来代替数组中的元素作为参数传入方法
+  ... 语法也可以用来代替数组中的元素作为参数传入方法
 这种运算符是将数组转化成参数
 
 
-```
+```javascript
 // dealColor方法用来处理传递的参数color值
 function dealColor (...color) {
 	console.log(color)
@@ -580,7 +558,7 @@ dealColor(...colors)
 该语法中，我们不能使用arguments，但是要想获取参数，一种是通过rest参数语法获取，一种是通过声明变量方式获取
 ES6中不允许我们对箭头函数执行new语法，
 
-```
+```javascript
 var add = (num1, num2, num3,...num) => {
 	console.log(arguments) //[]
 	console.log(num1, num2, num3) //1,2,3
@@ -607,7 +585,8 @@ Has方法，表示set实例化对象中是否有某值
 不存在该值，false
 Clear方法，表示清空set实例化对象
 注意，对set添加成员时候，不会进行数据类型的转化，添加一个字符串类型1 和添加一个数字类型的1，看作两个不同的值
-```
+
+```javascript
 var s = new Set([0, 1, 0, 1, 0, 1, 1, 1]);
 
 // 添加一个字符串1
@@ -622,7 +601,8 @@ s.delete(1)
 
 是set的一种数据结构，只不过它只能添加对象
 它与set比较没有size属性，没有clear方法，没有forEach方法，只有add，delete，has方法
-```
+
+```javascript
 var ws = new WeakSet();
 ws.add(window);
 ws.add({a: 111})
@@ -661,7 +641,8 @@ forEach方法用来循环map对象的，参数是一个回调函数
 Map对象不能使用for循环遍历
 Map对象不能使用for in循环
 Map对象可以使用for of循环来遍历map对象
-```
+
+```javascript
 var m = new Map();
 // 对map实例化对象添加属性，要用set方法,
 m.set('color', 'red')
@@ -700,7 +681,7 @@ for (var [key, value] of m) {
 当调用set，map，weakset,weakmap等等对象会实现该接口，
 是否实现该接口的标示识能否通过for of循环遍历
 
-```
+```javascript
 // 数据结构解析
 var s = new Set([0, 2, 1]);
 console.log(s);
@@ -725,7 +706,8 @@ var m = new Map();
 ES5提供的forEach方法可以很便捷的访问数组成员，但是不能使用break，cotinue，甚至return意义都变了
 For in循环，遍历数组时候，会将索引值转化成字符串，并且会获取其他不必要的属性设置原型对象上的属性，for in循环就是为遍历对象设计的
 For of循环，可以使用break，continue，return，并且意义没有变，可以很便捷的获取数组成员的值，但是在该循环中无法获取遍历的索引值值，
-```
+
+```javascript
 for (var i of arr) {
 	if (i == 'yellow') {
 		return;
@@ -745,7 +727,7 @@ Next方法是用来获取下一个状态的，返回值是个对象有两个属�
 Value 表示状态
 Done 是否遍历完成，false没有完成，true遍历完成
 
-```
+```javascript
 // 定义generator函数
 function * stateGenerator () {
 	yield '早晨起床';
@@ -771,7 +753,7 @@ console.log(sg.next())  // Object {value: undefined, done: true}
 
 ### 17. class 类
 
-```
+```javascript
 class Animal {
 
 	// 构造函数
@@ -844,7 +826,7 @@ ES6模块系统具有以下特性：
 
 每个JavaScript代码文件在ES6中都是一个模块。只有模块中的对象需要被外部调用时，模块才会输出对象，其余则都是模块的私有对象。
 
-```
+```javascript
 // test.js
 //暴露一个变量
 var say  = function () {
@@ -852,6 +834,7 @@ var say  = function () {
 }
 export say;
 ```
+
 #### 18.1 导出模块
 
 从模块里导出对象，ES6为我们提供了不同方法，见下面的讨论。
@@ -860,7 +843,7 @@ export say;
 
 ES6模块里的对象可在创建它们的声明中导出。一个模块中可无数次使用export，所有的对象将被一起导出。请看下面的例子：
 
-```
+```javascript
 
 var emp = new Employee(1, "Rina", new Date(1987, 1, 22));  
 
@@ -887,7 +870,7 @@ export function getEmployee(id, name, dob){
 
 使用单独导出声明重写上一案例中的模块，结果如下：
 
-```
+```javascript
 class Employee{  
   constructor(id, name, dob){  
     this.id = id;  
@@ -905,7 +888,7 @@ var x = new Employee(1, "Rina", new Date(1987, 1, 22));
 export {Employee, getEmployee};  
 ```
 
-```
+```javascript
 // test.js
 //暴露多个变量
  var name = '吕布';
@@ -923,7 +906,7 @@ export {Employee, getEmployee};
 
 在导出时，重命名对象也是可以的。如下例所示，Employee在导出时名字改为了Associate，函数GetEmployee改名为getAssociate。
 
-```
+```javascript
 export {  
     Associate as Employee,  
     getAssociate as getEmployee  
@@ -937,14 +920,14 @@ export {
 
 下面案例展示了在组导出语句中使用default：
 
-```
+```javascript
 export default {  
     Employee,  
     getEmployee  
 }; 
 ```
 
-```
+```javascript
  // default 导出
   export default function getAge() {} 
  
@@ -960,7 +943,8 @@ export default {
 #### 18.2 导入模块
 
 可以通过import 来引入其它模块，一个模块可以被导入任意数量的模块中。
-```
+
+```javascript
 //引入test.js中的name, age 变量
 import {name,age} from "./test.js";
 
@@ -975,14 +959,16 @@ import * as test form './test.js';
 * 1. 无对象导入
 
 导入的模块如果只执行一些逻辑语句，不引入对象，可以直接引入
-```
+
+```javascript
 import "./test.js"
 ```
 
 * 2. 导入默认对象
-* 
+
 采用 export default导出方式导出的对象，可以在import中直接分配给某个引用
-```
+
+```javascript
 import d from "test.js"
 ```
 
@@ -990,17 +976,14 @@ import d from "test.js"
 
 一个模块可以导出许多命名对象。如果另一模块想导入这些命名对象，需要在导入声明中一一列出这些对象。
 
-```
+```javascript
 import {Employee, getEmployee} from './module1.js';  
-```
 
-```
 import {default as d, Employee} from './module1.js';  
 ```
 
-一条import 语句可以同时导入默认方法和其它变量.
+// 一条import 语句可以同时导入默认方法和其它变量.
 
-```
 import defaultMethod, { otherMethod } from 'xxx.js';
 ```
 
@@ -1008,7 +991,7 @@ import defaultMethod, { otherMethod } from 'xxx.js';
 
 以上几种情况，只有import声明中列举的对象才会被导入并被使用，而其它对象则无法在导入模块中使用。当然，这就要求用户了解哪些对象可以导出并加以利用。如果模块导出大量对象，另一模块想引入所有导出的对象，就必须使用如下声明：
 
-```
+```javascript
 import * as allFromModule1 from './module1.js';  
 ```
 
@@ -1019,7 +1002,8 @@ import * as allFromModule1 from './module1.js';
 如果想基于某些条件或等某个事件发生后再加载需要的模块，可通过使用加载模块的可编程API（programmatic API）来实现。使用System.import方法，可按程序设定加载模块。这是一个异步的方法，并返回Promise。
 
 该方法的语法示例如下：
-```
+
+```javascript
 System.import('./module1.js')  
     .then(function(module1){  
         //use module1  
@@ -1029,36 +1013,3 @@ System.import('./module1.js')
 ```
 
 如果模块加载成功且将导出的模块成功传递给回调函数，Promise将会通过。如果模块名称有误或由于网络延迟等原因导致模块加载失败，Promise将会失败。
-
-
-</xmp>
-
-
-
-<!-- js代码 -->
-<script type="text/javascript">
-
-
-	
-</script>
-
-<!-- //markdown格式化文件 -->
-<script src="js/strapdown/strapdown_xiugai.js"></script>
-
-<!-- SyntaxHighlighter 代码着色执行文件 -->
-<script type="text/javascript">SyntaxHighlighter.all();</script>
-<!-- 生成目录 -->
-<script type="text/javascript" src="js/buildCatalog.js"></script>
-
-</body>
-</html>
-
-
-<!-- 代码自动高亮模板 -->
-<!-- <div class="daima">
-	<script type="syntaxhighlighter" class="brush: js;">
-
-	
-	</script>
-</div>
- -->
