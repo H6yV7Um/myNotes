@@ -606,6 +606,20 @@ rules: [{
 
 ### html-loader 处理html文件中引用的静态资源路径
 
+### ng-cache-loader angular中的template引用
+
+[https://github.com/teux/ng-cache-loader](https://github.com/teux/ng-cache-loader)
+
+把引入的template 放入 $templateCache中, 则可以在angular中的templateUrl中引用该html模块
+
+### file-loader 用于打包文件资源
+
+[https://github.com/webpack-contrib/file-loader](https://github.com/webpack-contrib/file-loader)
+
+默认启用MD5 hash
+
+
+---
 
 ## Plugins 插件配置
 
@@ -675,7 +689,36 @@ var webpackConfig = {
   ]
 }
 ```
+### extract-text-webpack-plugin 
 
+[https://github.com/webpack-contrib/extract-text-webpack-plugin](https://github.com/webpack-contrib/extract-text-webpack-plugin)
+
+用于取出文件资源作为一个单独的文件.
+
+```javscript
+
+// 取出所有引入的css文件到一个单独的文件中, 可以减小bundle的体积
+
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
+
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: ExtractTextPlugin.extract({
+          fallback: "style-loader",
+          use: "css-loader"
+        })
+      }
+    ]
+  },
+  plugins: [
+    new ExtractTextPlugin("styles.css"),
+  ]
+}
+
+```
 
 ## DevServer
 
