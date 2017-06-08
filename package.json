@@ -1,0 +1,35 @@
+{
+  "name": "notes",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "build": "webpack webpack.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xu3927/myNotes.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/xu3927/myNotes/issues"
+  },
+  "homepage": "https://github.com/xu3927/myNotes#readme",
+  "devDependencies": {
+    "copy-webpack-plugin": "^4.0.1",
+    "file": "^0.2.2",
+    "file-loader": "^0.9.0",
+    "html-webpack-plugin": "^2.28.0",
+    "markdown-loader": "^2.0.0",
+    "node-loader": "^0.6.0",
+    "node-sass": "^4.0.0",
+    "sass-loader": "^4.1.0",
+    "string-replace-webpack-plugin": "0.0.3",
+    "style-loader": "^0.13.1",
+    "webpack": "^2.6.1"
+  }
+}
