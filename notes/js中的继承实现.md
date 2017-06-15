@@ -1,8 +1,8 @@
-# js中的继承实现方法
+md# js中的继承实现方法
 
 ### 1. 通过原型链继承实例
 
-设置子类的原型执行父类的实例,实现对父类属性方法的继承.
+设置子类的原型为父类的实例, 通过原型链实现对父类属性方法的继承.
 
 ```javascript
 // 动物类作为父类
@@ -47,7 +47,7 @@ console.log(mouse.colors) //mouse的colors属性也添加了 "haha" 项
 
 原型链继承方式的缺陷:
 
-1. 当父类的原型链上的属性是引用类型时,子类的实例化对象会引用同一个内存地址上的该属性. 因此修改子类实例的引用类型的属性时会影响到父类.
+1. 父亲构造函数中的对象都会添加到子类的原型上, 当父对象构造函数中的属性是引用类型时,子类的实例化对象会引用同一个内存地址上的该属性. 因此修改一个子类实例的引用类型的属性时会影响到父类.
 
 2. 在创建子类的实例时,无法向父类的构造函数中添加参数.
 
@@ -77,39 +77,35 @@ A.prototype = {};
 ```
 
 ### 2. 构造函数式继承
-为了解决原型中包含引用类型所带来的继承性问题. 出现了构造函数式继承
+
+为了解决原型中包含引用类型所带来的继承性问题. 出现了构造函数式继承.
+
+借父类的构造函数来增强子类实例，把需要继承的属性方法都装在构造函数中. 通过在子类的构造函数中调用父类构造函数实现继承.
 
 ```javascript
-// 定义父类
-function Animal(name){
-	this.name = name;
-	// 构造函数继承可以继承父类构造函数中的方法属性.
-	this.battle = function(it){
-        console.log(this.name + "攻击了" + it);
+function Super(val){
+    this.val = val;
+    this.arr = [1];
+    // 由于闭包, 该函数无法复用, 每个实例都会得到一个新的函数.
+    this.fun = function(){
+        // ...
     }
 }
-
-// 无法继承父类原型上的属性方法
-Animal.prototype = {
-	 move : function(){
-        console.log(this.name + "动");
-    },
-    eat : function(){
-        console.log(this.name + '吃东西');
-    },
-    
+function Sub(val){
+    Super.call(this, val);   // 核心
+    // ...
 }
 
-// 定义子类
-function Buru(name){
-	// 继承父类的构造函数
-	Animal.call(this,name)
-	this.legs = "4";
-    this.bear = "胎生";
-}
+var sub1 = new Sub(1);
+var sub2 = new Sub(2);
+sub1.arr.push(2);
+alert(sub1.val);    // 1
+alert(sub2.val);    // 2
 
-// 创建实例
-var cat = new Buru("猫");
+alert(sub1.arr);    // 1, 2
+alert(sub2.arr);    // 1
+
+alert(sub1.fun === sub2.fun);   // false
 
 ```
 
@@ -119,45 +115,36 @@ var cat = new Buru("猫");
 
 缺点:
 1. 无法继承父类原型中的属性方法
-2. 父类的构造函数中的方法在每次创建子类实例的时候都会执行, 因此无法实现代码的复用.
+2. 对于父类中的方法函数无法复用, 每个子类实例都会得到一个新的函数. 实例多了会影响性能.
 
 ### 3. 组合继承. 
+
 也叫做伪经典继承.结合构造函数式继承和原型式继承. 
-通过原型链实现对父类原型上的属性和方法的继承. 通过构造函数继承父类构造函数中的属性方法. 
+- 把实例函数都放在原型对象上，以实现函数复用。
+- 同时还要保留借用构造函数方式的优点，通过Super.call(this);继承父类的基本属性和引用属性并保留能传参的优点；
+- 通过Sub.prototype = new Super();继承父类函数，实现函数复用
 
 ```javascript
 
-Animal.prototype = {
- 
-    eat : function(){
-        console.log(this.name + '吃东西');
-    }
-   
+function Super(){
+    // 只在此处声明基本属性和引用属性
+    this.val = 1;
+    this.arr = [1];
 }
-
-// 定义哺乳动物类, 继承动物类
-function Buru(name){
-    // 继承构造函数, 优势可以向父类中传递参数.
-    Animal.call(this,name);
-    this.name = "哺乳动物";
-    this.legs = "4";
-    this.bear = "胎生";
+//  在此处声明函数
+Super.prototype.fun1 = function(){};
+Super.prototype.fun2 = function(){};
+//Super.prototype.fun3...
+function Sub(){
+    Super.call(this);   // 核心
+    // ...
 }
+Sub.prototype = new Super();    // 核心
 
-// 通过设置原型链继承动物父类
-Buru.prototype = new Animal();
-
-
-// 再添加自身的方法,需要写在继承之后,并且不能使用对象,否则会覆盖继承的父类
-Buru.prototype.feed = function(){
-    console.log(this.name + "通过哺乳方式喂养幼崽")
-} 
-
-// 设置原型链的指向后, Buru 构造函数会丢失构造器. 此时可以让构造器重新指向一下
-Buru.prototype.constructor = Buru;
-
-var cat = new Buru();
-
+var sub1 = new Sub(1);
+var sub2 = new Sub(2);
+alert(sub1.fun === sub2.fun);   // true
+sub1.arr === sub2.arr // false
 ```
 组合式继承
 
@@ -165,9 +152,13 @@ var cat = new Buru();
 
 组合继承避免了原型链和借用构造函数的缺陷，融合了它们的优点，成为 JavaScript 中最常用的继承模式。而且， instanceof 和 isPrototypeOf()也能够用于识别基于组合继承创建的对象。
 
+- 不存在引用类型的问题
+- 可以传参
+- 父类的函数方法可以复用
+
 缺点:
 
-父类的构造函数会执行两遍.
+父类的构造函数会执行两遍. 父类构造函数中的属性会出现2次, 实例对象本身及原型链上各一份. 而子类实例上的那一份屏蔽了子类原型上的。。。又是内存浪费
 
 ### 4. 原型式继承.
 
@@ -231,3 +222,90 @@ name: "Nicholas",
 friends: ["Shelby", "Court", "Van"]
 };
 ```
+
+### 5. 寄生组合式继承
+
+对组合式继承的优化. 解决构造函数执行两次导致原型链上的属性富裕的问题. 完美的继承方案, 只是实现有点麻烦.
+
+```javascript
+
+// 原型式继承, 生成一个纯的原型对象. 功能相当于Object.crate();
+function createObject (obj) {
+    var F = function () {};
+    F.prototype = obj;
+    return new F();
+}
+
+function Super () {
+    // 构造函数中定义值类型, 及引用类型
+    this.val = 1;
+    this.colors = ['red', 'blue', 'green'];
+}
+// 父类原型链上定义函数方法
+Super.prototype.fn1 = function () {};
+Super.prototype.fn2 = function () {};
+
+function Sub () {
+    Super.call(this);
+}
+
+// 去掉原型链上多余的父类构造函数中的属性
+var _proto = createObject(Super.prototype);
+// 绑定constructor属性
+_proto.constructor = Sub;
+// 原型链继承
+Sub.prototype = _proto;
+
+var child1 = new Sub();
+var child2 = new Sub();
+
+```
+
+### 6. 寄生式
+
+寄生式是一种模式（套路），并不是只能用来实现继承
+
+```javascript
+
+function beget(obj){   // 生孩子函数 beget：龙beget龙，凤beget凤。
+    var F = function(){};
+    F.prototype = obj;
+    return new F();
+}
+function Super(){
+    this.val = 1;
+    this.arr = [1];
+}
+function getSubObject(obj){
+    // 创建新对象
+    var clone = beget(obj); // 核心
+    // 增强
+    clone.attr1 = 1;
+    clone.attr2 = 2;
+    //clone.attr3...
+
+    return clone;
+}
+
+var sub = getSubObject(new Super());
+alert(sub.val);     // 1
+alert(sub.arr);     // 1
+alert(sub.attr1);   // 1
+
+```
+
+注意：beget函数并不是必须的，换言之，创建新对象 -> 增强 -> 返回该对象，这样的过程叫寄生式继承，新对象是如何创建的并不重要（用beget生的，new出来的，字面量现做的。。都可以）
+
+优点：
+
+还是不需要创建自定义类型
+缺点：
+
+无法实现函数复用（没用到原型，当然不行）
+P.S.剧情解析：有缺陷的寄生式继承 + 不完美的组合继承 = 完美的寄生组合式继承，不妨回去找找看哪里用到了寄生
+
+
+
+
+
+
