@@ -40,6 +40,31 @@ ws 服务端用来实现websocket
 
 [https://www.npmjs.com/package/http-proxy-middleware](https://www.npmjs.com/package/http-proxy-middleware)
 
+### commander 命令行处理
+
+[https://npm.taobao.org/package/commander](https://npm.taobao.org/package/commander)
+
+用于node脚本命令行参数处理
+
+
+### nodemon node进程监视器
+
+用于管理node服务
+
+[https://www.npmjs.com/package/nodemon](https://www.npmjs.com/package/nodemon)
+
+
+### keygrip 用来做验证
+
+[https://www.npmjs.com/package/keygrip](https://www.npmjs.com/package/keygrip)
+
+### memory-fs 用来在内存中创建文件目录, 
+
+可以在内存中进行读写操作, 极大提高IO效率. webpack devserver 就使用了该机制.
+
+[https://juejin.im/entry/5769f8dc128fe10057d2f4ae](https://juejin.im/entry/5769f8dc128fe10057d2f4ae)
+
+
 ----
 
 ## webpack 插件

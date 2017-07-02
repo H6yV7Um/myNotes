@@ -4,7 +4,7 @@
 
 flex 布局模式有自己的一套新的描述概念, 如下图
 
-![基本概念](./images/chatu/flex1.png)
+![基本概念](./images/chatu/flexbox1.png)
 
 - 两个轴 axis: 主轴 main axis, 侧轴 cross axis
 	- flex-direction: 确定主轴, 轴线改变, justify-content, align-items的行为也会改变方向.
@@ -26,7 +26,7 @@ flex 布局模式有自己的一套新的描述概念, 如下图
 - flex-direction: row | row-reverse | column | column-reverse;
 - flex-wrap: nowrap | wrap | wrap-reverse (从最后一行排列, 如果最后一行不满的话会空出后面的位置,不会补上来);
 - justify-content: center | flex-start (默认值) | flex-end | space-between (元素之间留空隙, 与父盒子边缘之间没有空隙) | space-around(与父盒子边缘之间也有空隙); 主轴上的分布方式
-- align-items: base-line(基准线) | flex-start | flex-end | center | stretch（默认值）：如果项目未设置高度或设为auto，将占满整个容器的高度。
+- align-items: base-line(基准线) | flex-start | flex-end | center | stretch（拉伸的 默认值）：如果项目未设置高度或设为auto，将占满整个容器的高度。
 - flex-flow: <flex-direction> || <flex-wrap>; 两个属性组成的复合属性
 - align-content: flex-start | flex-end | center | space-between | space-around | stretch; 定义多根轴线的对齐方式.
 

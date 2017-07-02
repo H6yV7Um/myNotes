@@ -595,7 +595,14 @@ s.add(2)
 s.clear();
 s.has(1)
 s.delete(1)
+
+// for of 遍历 set
+for(var kk of s){
+	console.log(kk);
+}
+
 ```
+
 
 ### 11. WeakSet 对象
 

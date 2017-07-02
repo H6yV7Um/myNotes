@@ -9,7 +9,7 @@
 - TTFB: First Byte 首字节
 - TTDD: time to document download. 从服务器加载HTML文档的时间
 - TTHE: time to head end. HTML文档头部解析完成的时间
-- TTSR: time to start render. ：浏览器开始渲染的时间，从用户角度出发则可以定义为用户在页面上看到的第一个内容的时间。 即TTSR越短，用户越早浏览器中的内容，心理上的等待时间会越短。
+- TTSR: time to start render. ：白屏时间, 浏览器开始渲染的时间，从用户角度出发则可以定义为用户在页面上看到的第一个内容的时间。 即TTSR越短，用户越早浏览器中的内容，心理上的等待时间会越短。
 - Start Render，First Paint 开始渲染，白屏时间
 - DOMContentLoaded 网页结构加载解析成DOM
 - Load 网页加载完成，包括样式图片iframe等加载
@@ -34,7 +34,7 @@
 
 HTML文档头部解析完成所需要的时间.
 
-### 开始渲染时间 TTSR (Time To Start Render)
+### 开始渲染时间. 白屏时间 TTSR (Time To Start Render)
 
 浏览器开始渲染的时间, 用户看到第一个内容的时间. 
 
@@ -46,7 +46,7 @@ TTSR = TTFB + TTDD + TTHE;
 
 - 服务器响应时间
 - HTML文档大小
-- HTML的HEAD中资源使用情况, 是否有脚本阻塞页面的解析.
+- HTML的HEAD中资源使用情况, 是否有脚本阻塞页面的解析. html head 中如果有脚本, 会阻塞页面, 只有其前面的资源如css等全部加载完成自身才会解析. 如果头部必须有脚本, 可以把脚本放在head最前面, 后面放css文件.
 
 ** 与Dom相关的事件 **
 
@@ -77,7 +77,7 @@ TTDR = TTSR + TTDC + TTST;
 
 - TTSR: Time to start render. 浏览器开始渲染的时间
 - TTDC: time to dom created. dom树创建所消耗时间
-- TTST: time to script. BODY中所有脚本加载和执行的时间.
+- TTS: time to script. BODY中所有脚本加载和执行的时间.
 
 TTDR 主要受以下因素影响.
 1. DOM结构的复杂度
