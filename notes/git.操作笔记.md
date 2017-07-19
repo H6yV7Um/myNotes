@@ -4,7 +4,7 @@
 
 ### 基本概念
 
-![git仓库](./images/chatu/git-flow.png)
+![git仓库\](./images/chatu/git-flow.png)
 
 git中的文件有3种状态.
 
@@ -54,17 +54,28 @@ src/app/poi/poiDetail/subView/tradeInfo/index.html |  2 +-
 
 ```
 
+### git push 
+
+#### 切换远程分支
+
+$ git push origin :develog
+To git@github.com:schacon/simplegit.git
+ - [deleted]         serverfix
+
+git push [远程名] [本地分支]:[远程分支] 语法，
+如果省略 [本地分支]，那就等于是在说“在这里提取空白然后把它变成[远程分支]”
+
 ### git checkout 切换分支或者恢复工作区的文件
 
-#### git checkout [<branch>]
+#### git checkout [\<branch\>\]
 
-切换分支, 如果本地没有该分支, 而remote有, 则会切换到新分支并关联远程分支, 相当于 git checkout -b <new branch> --track <remote>/<branch>, 
+切换分支, 如果本地没有该分支, 而remote有, 则会切换到新分支并关联远程分支, 相当于 git checkout -b \<new branch\> --track \<remote\>/\<branch\>, 
 
-#### git checkout -b <new branch> [<start point>] 
+#### git checkout -b \<new branch\> [\<start point\>\] 
 
  创建并切换到新分支, 如果指定start point(commit hash)则会从该commit切换出去, 新的分支的最后一个commit为start point指定的commit
 
-#### git checkout [-p|--patch] [<tree-ish>] <pathspec>  恢复一个文件或目录
+#### git checkout [-p|--patch\] [\<tree-ish\>\] \<pathspec\>  恢复一个文件或目录
 
 pathspec: 文件或文件夹路径
 tree-ish: tag, tree 或 commit, 默认是当前的commit
@@ -85,8 +96,8 @@ git checkout .
 
 ### git merge 合并分支
 
-如master分支commit历史为 A -> B -> C -> D
-dev分支commit历史为 A -> B -> E -> F -> G
+如master分支commit历史为 A -\> B -\> C -\> D
+dev分支commit历史为 A -\> B -\> E -\> F -\> G
 
 在dev分支要合并master分支. 那么
 
@@ -103,7 +114,7 @@ git commit -m merge-master-to-dev
 
 # 那么此时dev的commit历史如下. 并入的master的历史会跟在分支节点的后面.
 
-A -> B -> C -> E -> F -> G -> merge-master-to-dev
+A -\> B -\> C -\> E -\> F -\> G -\> merge-master-to-dev
 
 # 查看合并的提交及父提交的关系图
 
@@ -143,7 +154,7 @@ git log -10 --graph --stat --pretty=oneline
 
 ![git-rebase](./images/chatu/git.rebase2.png)
 
-git rebase <new base> [<now branch>]
+git rebase \<new base\> \[\<now branch\>\]
 
 用于把一个分支的修改合并到当前分支。
 
@@ -160,7 +171,7 @@ rebase 如当前在dev分支, git rebase master. 则会以master的最后commit�
      /
 D---E---F---G master
  
- # 执行 git checkout dev => git rebase master
+ # 执行 git checkout dev =\> git rebase master
  # 则会查找到2个分支的共同父节点E, 以G为基底, 将 A, B, C 生成多个patch(补丁), 在G的基础上依次应用各个补丁, 遇到冲突会提示用户处理冲突, 若无冲突则自动合并并应用下一个补丁
  # 冲突处理完通过 
  git add . //添加到暂存区
@@ -188,7 +199,7 @@ D---E---F---G master
 取出client分支, 找出client和server分支的共同祖先之后的变化, 将这些变化以master的最后commit为基底重演一遍.
 
 
-#### git rebase -i <branch name>
+#### git rebase -i \<branch name\>
 
 git rebase -i master // 在当前分支上 rebase master分支
 
@@ -200,7 +211,7 @@ interactive 交互式的执行rebase, 会打开命令编辑界面. 输入每个c
 
 合并当前分支的前4个commit为一个. 只合并commit message, 仍然会保留每个commit所做的文件变更.
 
-或者 git rebse -i <commit-hash> 会重写从当前commit 到指定hash的commit记录
+或者 git rebse -i \<commit-hash\> 会重写从当前commit 到指定hash的commit记录
 
 ### 冲突处理
 
@@ -213,7 +224,7 @@ interactive 交互式的执行rebase, 会打开命令编辑界面. 输入每个c
 **冲突处理**
 
 - git merge --abort 取消merge
-- 解决冲突. 打开冲突的文件, 手动解决冲突. 然后在 git add . => git commit 
+- 解决冲突. 打开冲突的文件, 手动解决冲突. 然后在 git add . =\> git commit 
 
 - git diff 查看冲突的部分
 
@@ -282,10 +293,10 @@ index cfbf0d9,0c36e7c..0000000
 
 #### 冲突标记风格
 
-通过 git config --add merge.style [value] 可以设置冲突的标记风格
+通过 git config --add merge.style \[value\] 可以设置冲突的标记风格
 可选值
-- merge 默认. 以 <<<< 本地更改的版本 ==== 他人更改的版本 >>>> 来表示
-- diff3 以 <<<< 本地更改的版本 ||||| 原始版本  ======  他人修改的版本 >>>>> 来表示
+- merge 默认. 以 \<\<\<\< 本地更改的版本 ==== 他人更改的版本 \>\>\>\> 来表示
+- diff3 以 \<\<\<\< 本地更改的版本 ||||| 原始版本  ======  他人修改的版本 \>\>\>\>\> 来表示
 
 ```bash
 	# 文件冲突 ==== 前面是自己的分支, 后面是merge的分支
@@ -331,18 +342,18 @@ git blame README.md
 
 创建tag
 
-- git tag -a <tagName> <commit hash> -m <tagMsg> // 创建一个tag, tag名默认不能重名
-- git tag -f <tagName> -m <tagMsg> // 如果tag已存在, 在替换该tag, 也即update 该 tag
+- git tag -a \<tagName\> \<commit hash\> -m \<tagMsg\> // 创建一个tag, tag名默认不能重名
+- git tag -f \<tagName\> -m \<tagMsg\> // 如果tag已存在, 在替换该tag, 也即update 该 tag
 
 ** listing tag **
 
 - git tag -l // 展示tag名
-- git tag -n <n> // 打印 n行的tag 及 tag message
+- git tag -n \<n\> // 打印 n行的tag 及 tag message
 - git show-ref --tags // 打印所有的 tag 及对应的 commit信息.
 
 ** 删除tag **
 
-- git tag -d <tagName> // 删除tag
+- git tag -d \<tagName\> // 删除tag
 
 ** 推送tag到远程仓库 **
 
@@ -355,16 +366,16 @@ git blame README.md
 
 ** tag 应用 **
 
-- git show <tagName> // 查看该tag的详细信息, 包含文件的变化.
+- git show \<tagName\> // 查看该tag的详细信息, 包含文件的变化.
 
 
 ### git diff
 
 比较差异
 
-git diff <commit A> // 比较工作区与版本A的差异
-git diff <commit B> <commit A> // 比较两个版本的差异
-git diff --cached <commit A> // 比较暂存区和版本A的差异
+git diff \<commit A\> // 比较工作区与版本A的差异
+git diff \<commit B\> \<commit A\> // 比较两个版本的差异
+git diff --cached \<commit A\> // 比较暂存区和版本A的差异
 git diff // 比较工作区和暂存区的差异
 git diff --cached // 暂存区和HEAD
 git diff HEAD // 工作区和HEAD比较

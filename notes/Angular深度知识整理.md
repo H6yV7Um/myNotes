@@ -459,11 +459,14 @@ scope 有3种取值.
 
 ### 10. 循环依赖注入的解决方法
 
+场景: 现在有2个服务, 一个存放枚举数据的enumService, 一个是API服务 APIService. 现在枚举服务中的一个数据需要通过接口获取, 因此需要使用APIService. 同时APIService中的一些方法需要使用enumService中的值. 此时就会出现循环依赖.  
+
 如果两个服务或控制器等循环依赖注入的话会报错, 此时可以通过 $injector来手动注入.
 
-```
+```javascript
+
 angular.module('app', [])
-// 若直接注入 factory2 会造成循环注入, 此时可以通过 $injector 来动态的注入服务
+// 若直接注入 factory2 会造成循环注入, 此时可以通过 $injector 来动态的注入服务, 同时需要将注入延迟到执行阶段. 
 .factory('factory1', function ($injector) {
     return function () {
       console.log('1111', $injector.get('factory2'));

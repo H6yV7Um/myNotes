@@ -552,6 +552,12 @@ var colors = ['red', 'green', 'blue', 'orange']
 dealColor(...colors)
 ```
 
+也可以用来展开对象
+
+```
+let objClone = { ...obj };
+```
+
 #### 9.3 箭头函数
 
 定义语法 ( ) => { }

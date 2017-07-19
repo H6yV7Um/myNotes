@@ -1,29 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
-<head>
-	<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-	<title>vue整理2</title>
-	<!-- 代码着色核心文件 -->
-	<script type="text/javascript" src="js/syntaxhighlighter_3.0.83/src/shCore.js"></script> 
-	<!-- 代码着色匹配代码类型的文件 -->
-	<script type="text/javascript" src="js/syntaxhighlighter_3.0.83/scripts/shBrushJScript.js"></script>
-	<!-- 代码高亮的css样式文件 -->
-	<link type="text/css" rel="stylesheet" href="js/syntaxhighlighter_3.0.83/styles/shCoreEmacs.css"/>
-	<!-- 当前页面的主题 修改theme后面的值就可以直接修改主题了-->
-	<script type="text/theme" theme = "cyborg" id = "theme_strapdown"></script>
-
-	<!-- 自己定义的css样式 -->
-	<!-- <link rel="stylesheet"  type='text/css' href="css/base.css" /> -->
-	
-	<style type="text/css">
-
-	</style>
-</head>
-<body>
-
-<!-- 插入markDown -->
-
-<xmp>
+[TOC]
 
 # vue 不熟悉的知识整理
 
@@ -31,7 +6,8 @@
 
 Mustache 语法
 
-```
+```html
+
 <div id="app">
 	<div>{{ *msg }}</div>
 </div>
@@ -52,7 +28,7 @@ obj.msg = "修改值" //由于是单次插值，该次不会修改Vue中的msg�
 三层花括号{{{ msg }}}插值会把HTML标签渲染为为HTML标签。
 二层花括号{{ msg }}会把HTML标签作为字符串来进行处理
 
-```
+```html
 <div id="app">
 	<div>{{{msg}}}</div>
 </div>
@@ -72,7 +48,7 @@ obj.msg = "修改值" //由于是单次插值，该次不会修改Vue中的msg�
 
 computed属性中定义的变量相当于是一个getter方法(不过是vue包装后的getter,不是原生的getter方法). 计算属性持续计算该变量getter方法中依赖的其他变量(vue中注册的变量), 当属性所依赖的变量值发生改变时会触发computed中的函数。如果所依赖的变量没有在vue中注册,即使发生了改变也不会触发computed方法
 
-```
+```html
 
 <div id="app">
 		<p>{{msg}}</p>
@@ -130,7 +106,7 @@ Vue.js 的计算属性不是简单的 getter。计算属性持续追踪它的响
 
 由于计算属性被缓存了，在访问它时 getter 不总是被调用。考虑下例：
 
-```
+```javascript
 var vm = new Vue({
   data: {
     msg: 'hi'
@@ -147,7 +123,7 @@ var vm = new Vue({
 
 有时希望 getter 不改变原有的行为，每次访问 vm.example 时都调用 getter。这时可以为指定的计算属性关闭缓存：
 
-```
+```javascript
 computed: {
   example: {
     cache: false,
@@ -165,7 +141,8 @@ computed: {
 
 Vue.js 提供了一个方法 $watch，它用于观察 Vue 实例上的数据变动。当一些数据需要根据其它数据变化时， $watch 很诱人 —— 特别是如果你来自 AngularJS。不过，**通常更好的办法是使用计算属性** 而不是一个命令式的 $watch 回调。
 
-```
+
+```javascript
 var vm = new Vue({
   el: '#demo',
   data: {
@@ -187,7 +164,7 @@ vm.$watch('lastName', function (val) {
 
 在vue组件模块中使用 $watch
 
-```
+```javascript
 var _data = {
         msg:'12345',
         msg2 : '',
@@ -220,14 +197,14 @@ export default {
 
 v-bind:class 指令可以与普通的 class 特性共存：
 
-```
+```html
 <div class="static" v-bind:class="{ 'class-a': isA, 'class-b': isB }"></div>
 ```
 
 
 ### data 属性
 
-```
+```javascript
 var data = { a: 1 }
 var vm = new Vue({
   data: data
@@ -246,7 +223,8 @@ vm.a // -> 3
 ```
 注意只有这些被代理的属性是响应的。如果在实例创建之后添加新的属性到实例上，它不会触发视图更新。
 
-```
+```html
+
 <div class='pageone'>
     <p>{{msg}}</p>
     <p>{{msg2}}</p>
@@ -279,16 +257,18 @@ export default {
 
 如:
 
-```
-//这里的指令是 v-bind 参数是 href
+```html
+<!-- 这里的指令是 v-bind 参数是 href -->
 <a v-bind:href='url'></a>
+
 ```
 
 ### 指令的修饰符 点后面加 .修饰符
 
-```
-// .后面的为指令修饰符
+```html
+ <!-- .后面的为指令修饰符 -->
 <a v-on:keydown.enter="doSearch"></a>
+
 ```
 
 ### 指令缩写 
@@ -298,13 +278,15 @@ v-on 指令 缩写为 @
 
 如
 
-```
+```html
+
 <p v-bind:href='url'></p>
 // 等价于
 <p :href='url'></p>
 <button v-on:click='clickBtn'></button>
 // 等价于
 <button @click='clickBtn'></button>
+
 ```
 
 ### vue中的数组变动检测
@@ -323,11 +305,12 @@ unshift()
 splice()
 sort()
 reverse()
+
 ```
 
 如:
 
-```
+```html
 <template>
 	<ul>
 		<li v-for='item in arr'>{{ item }}</li>
@@ -406,7 +389,7 @@ v-for 默认通过数据对象的特征来决定对已有作用域和 DOM 元素
 
 然后可以这样给出提示：
 
-```
+```html
 <div v-for="item in items" track-by="_uid">
   <!-- content -->
 </div>
@@ -427,7 +410,7 @@ v-for 默认通过数据对象的特征来决定对已有作用域和 DOM 元素
 
 可以在 v-for 作用域内获取 数组的下标, 或 对象的索引值并循环渲染对象
 
-```
+```html
 <template>
 	<ul>
 		<!-- 可以为数组索引值起一个别名,则作用域内能够访问到该索引变量 -->
@@ -483,7 +466,7 @@ vue中的事件修饰符有4个, prevent, stop, capture, self
 >* 也可以只有修饰符没有事件回调
 
 
-```
+```html
 <!-- 阻止单击事件冒泡 -->
 <a v-on:click.stop="doThis"></a>
 
@@ -523,7 +506,7 @@ el, data 属性 在组件中需要是一个函数.
 
 >* 用法:
 
-```
+```javascript
 Vue.component('child', {
   // 声明 props
   props: ['msg'],
@@ -539,7 +522,7 @@ Vue.component('child', {
 
 >* 动态传递数据 v-bind:msg-child='msgParent'
 
-```
+```html
 <div>
   <input v-model="parentMsg">
   <br>
@@ -561,7 +544,7 @@ Vue.component('child', {
 
 不需要全局注册每个组件。可以让组件只能用在其它组件内，用实例选项 components 注册：
 
-```
+```javascript
 var Child = Vue.extend({ /* ... */ })
 
 var Parent = Vue.extend({
@@ -573,7 +556,7 @@ var Parent = Vue.extend({
 })
 ```
 
-```
+```javascript
 // 父组件中
 
  <p>
@@ -601,7 +584,7 @@ Vue.extend('parentComponent',{
 	}
 })
 
-///////////
+/******/
 
 // 子组件中
 
@@ -628,7 +611,7 @@ Vue.extent('childComponent',{
 
 当props中的属性需要验证类型时, props 是对象格式
 
-```
+```javascript
 
 // 父组件中
 
@@ -643,7 +626,7 @@ Vue.extend('parentComponent',{
 	}
 })
 
-/////////////////////////////
+/***********/
 
 // 子组件中
 
@@ -732,7 +715,7 @@ type 也可以是一个自定义构造器，使用 instanceof 检测。
 
 为了让事件更简单，可以直接传入选项对象而不是构造器给 Vue.component() 和 component 选项。Vue.js 在背后自动调用 Vue.extend()：
 
-```
+```html
 // 在一个步骤中扩展与注册
 Vue.component('my-component', {
   template: '<div>A custom component!</div>'
@@ -778,7 +761,7 @@ vue中的自定义事件相关方法有4个
 
 尽管有 props 和 events，但是有时仍然需要在 JavaScript 中直接访问子组件。为此可以使用 v-ref 为子组件指定一个索引 ID。例如：
 
-```
+```html
 <div id="parent">
   <user-profile v-ref:profile></user-profile>
 </div>
@@ -794,7 +777,7 @@ v-ref 和 v-for 一起用时，ref 是一个数组或对象，包含相应的子
 
 把未知元素插入到模板中. 类似angular的 transclude 属性
 
-```
+```html
 // 例子
 
 // 子组件中的模板
@@ -820,7 +803,7 @@ v-ref 和 v-for 一起用时，ref 是一个数组或对象，包含相应的子
 
 仍然可以有一个匿名 slot，它是默认 slot，作为找不到匹配的内容片段的回退插槽。如果没有默认的 slot，这些找不到匹配的内容片段将被抛弃。
 
-```
+```html
 <!--  子组件中的模板 -->
 <template>
 	<div>
@@ -853,7 +836,8 @@ v-ref 和 v-for 一起用时，ref 是一个数组或对象，包含相应的子
 
 多个组件可以使用同一个挂载点，然后动态地在它们之间切换。使用保留的 <component> 元素，动态地绑定到它的 is 特性：
 
-```
+```javascript
+
 new Vue({
   el: 'body',
   data: {
@@ -875,7 +859,8 @@ new Vue({
 
 如果把切换出去的组件保留在内存中，可以保留它的状态或避免重新渲染。为此可以添加一个 keep-alive 指令参数：
 
-```
+```html
+
 <component :is="currentView" keep-alive>
   <!-- 非活动组件将被缓存 -->
 </component>
@@ -885,7 +870,8 @@ new Vue({
 
 在切换组件时，切入组件在切入前可能需要进行一些异步操作。为了控制组件切换时长，给切入组件添加 activate 钩子：
 
-```
+```javascript
+
 Vue.component('activate-example', {
   activate: function (done) {
     var self = this
@@ -911,13 +897,14 @@ out-in：当前组件先过渡出去，等它的过渡完成之后新组件过�
 
 示例：
 
-```
+```html
 <!-- 先淡出再淡入 -->
 <component
   :is="view"
   transition="fade"
   transition-mode="out-in">
 </component>
+
 .fade-transition {
   transition: opacity .3s ease;
 }
@@ -930,7 +917,7 @@ out-in：当前组件先过渡出去，等它的过渡完成之后新组件过�
 
 自定义组件可以像普通元素一样直接使用 v-for：
 
-```
+```html
 <my-component v-for="item in items"></my-component>
 <!-- 但是，不能传递数据给组件，因为组件的作用域是孤立的。为了传递数据给组件，应当使用 props： -->
 
@@ -958,7 +945,7 @@ slot 允许外部环境插入内容到组件的视图结构内。
 
 使用 v-bind 和 v-on 的简写语法，模板的缩进清楚且简洁：
 
-```
+```html
 <my-component
   :foo="baz"
   :bar="qux"
@@ -974,7 +961,7 @@ slot 允许外部环境插入内容到组件的视图结构内。
 
 在大型应用中，我们可能需要将应用拆分为小块，只在需要时才从服务器下载。为了让事情更简单，Vue.js 允许将组件定义为一个工厂函数，动态地解析组件的定义。Vue.js 只在组件需要渲染时触发工厂函数，并且把结果缓存起来，用于后面的再次渲染。例如：
 
-```
+```javascript
 Vue.component('async-example', function (resolve, reject) {
   setTimeout(function () {
     resolve({
@@ -986,17 +973,21 @@ Vue.component('async-example', function (resolve, reject) {
 
 工厂函数接收一个 resolve 回调，在收到从服务器下载的组件定义时调用。也可以调用 reject(reason) 指示加载失败。这里 setTimeout 只是为了演示。怎么获取组件完全由你决定。推荐配合使用 Webpack 的代码分割功能：
 
-```
+```javascript
+
 Vue.component('async-webpack-example', function (resolve) {
   // 这个特殊的 require 语法告诉 webpack
   // 自动将编译后的代码分割成不同的块，
   // 这些块将通过 ajax 请求自动下载。
   require(['./my-async-component'], resolve)
 })
+
 ```
 ### 递归组件
 
 组件在它的模板内可以递归地调用自己，不过，只有当它有 name 选项时才可以：
+
+```javascript
 
 var StackOverflow = Vue.extend({
   name: 'stack-overflow',
@@ -1006,36 +997,8 @@ var StackOverflow = Vue.extend({
       '<stack-overflow></stack-overflow>' +
     '</div>'
 })
+
+```
+
 上面组件会导致一个错误 “max stack size exceeded”，所以要确保递归调用有终止条件。当使用 Vue.component() 全局注册一个组件时，组件 ID 自动设置为组件的 name 选项。
 
-</xmp>
-
-
-
-<!-- js代码 -->
-<script type="text/javascript">
-
-
-	
-</script>
-
-<!-- //markdown格式化文件 -->
-<script src="js/strapdown/strapdown_xiugai.js"></script>
-
-<!-- SyntaxHighlighter 代码着色执行文件 -->
-<script type="text/javascript">SyntaxHighlighter.all();</script>
-<!-- 生成目录 -->
-<script type="text/javascript" src="js/buildCatalog.js"></script>
-
-</body>
-</html>
-
-
-<!-- 代码自动高亮模板 -->
-<!-- <div class="daima">
-	<script type="syntaxhighlighter" class="brush: js;">
-
-	
-	</script>
-</div>
- -->

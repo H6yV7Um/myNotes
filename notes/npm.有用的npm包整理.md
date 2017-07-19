@@ -64,6 +64,11 @@ ws 服务端用来实现websocket
 
 [https://juejin.im/entry/5769f8dc128fe10057d2f4ae](https://juejin.im/entry/5769f8dc128fe10057d2f4ae)
 
+### colors
+ 
+console.log加颜色
+
+[https://www.npmjs.com/package/colors](https://www.npmjs.com/package/colors)
 
 ----
 

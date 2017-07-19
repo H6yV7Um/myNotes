@@ -4,9 +4,15 @@
 
 ### window.devicePixielRatio: 设备像素比.
 
-获取设置的物理像素与css像素的比.  
+获取设备的物理像素与css像素的比.  
 通常非视网膜屏幕的值为1. 视网膜屏幕值为2. 
 即 视口宽度为320px. 但是实际会用640px的物理像素来显示. 
+
+### 视口的3个概念
+
+- layout viewport 当前页面的css宽度, 即html元素的宽度, 通过该方法可以获取到, document.documentElement.clientWidth
+- visual viewport 当前浏览器的可视区域的宽度, 通过window.innerWidth, 也是当前所设置的视口宽度.
+- ideal viewport 当前设备的理想视口宽度, 设备出厂时决定, 很多设备会设为320px或375px.
 
 ### viewport meta标签
 
@@ -22,10 +28,38 @@
 
 - width: 设置布局的视口宽度, 为正整数或'device-width' 
 - height: 设置布局的高度. 不重要. 很少使用. 
-- intial-scale: 页面初始所防值. 为数字
+- initial-scale: 页面初始缩放倍数. 为数字
 - minimum-scale: 最小缩放倍数. 数字
 - maximum-scale: 最大放大倍数. 数字
 - user-scalable: 是否允许用户缩放. 值为no, yes
+
+### initial-scale和width
+
+**width=device-width*
+
+viewport的meta标签, 如果只设置width属性. 即设置当前的visual viewport. 
+当取值为device-width时, 即把视口设为ideal-viewport 在iphone和ipad上，无论是竖屏还是横屏，宽度都是竖屏时ideal viewport的宽度。
+
+**initial-scale属性**
+
+设置当前页面的缩放. 
+当设为initial-scale=1.0时, 则表示当前页面不缩放, 此时的视口宽度等于 ideal-width, 与竖屏时 width=device-width 是一样的效果. 
+
+缺陷: 对于wp系统的IE浏览器, initial-scale的ideal-width总是取竖屏时的.
+
+缩放的比例的含义. 
+缩放的比值等于 ideal viewport / visual viewport, 即 理想视口宽度 / 可视区域的宽度
+比值越大, 则表示放大的越大, 因此可视区域越小
+值为1.0时, 此时 宽度可视区域宽度为ideal viewport
+值为0.5时, 此时 visual viewport = 375 / 0.5 = 750px
+
+** 当width=400 和 initial-scale=1 同时出现的冲突处理. **
+
+initial-scale更通用一些. 
+当2者同时出现, 会取两者之中较大的值, 如对于iPhone6而言, ideal viewport 为375. 此时设置了width=400, initial-scale=1 则会取400. 
+
+
+
 
 ## 布局原理
 
