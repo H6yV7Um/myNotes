@@ -70,6 +70,32 @@ console.log加颜色
 
 [https://www.npmjs.com/package/colors](https://www.npmjs.com/package/colors)
 
+
+### http-proxy 转发http请求
+
+[https://www.npmjs.com/package/http-proxy](https://www.npmjs.com/package/http-proxy)
+
+http-proxy-middleware的转发使用的也是该包
+
+----
+
+## Browserify 浏览器环境
+
+### superagent HTTP请求库
+
+发送http请求
+
+[docs](http://visionmedia.github.io/superagent/)
+
+[http://npm.sankuai.com/package/superagent](http://npm.sankuai.com/package/superagent)
+
+### winston Logging库
+
+[https://www.npmjs.com/package/winston](https://www.npmjs.com/package/winston)
+
+A multi-transport async logging library for node.js. 
+
+
 ----
 
 ## webpack 插件

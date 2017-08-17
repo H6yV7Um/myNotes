@@ -165,6 +165,42 @@ entry: {
 
 ```
 
+### polyfill 源码
+
+```JavaScript
+
+"use strict";
+// shim(垫片)中引用了一些ES6的helper函数. Object, Function, Number, Math, String, Date, Array, Regexp 等对象新增的方法以及 Promise, Map, WeakMap, WeakSet Set, symbol等新增的类型. 源码[https://github.com/zloirock/core-js/blob/de6719b9ca437e154663ff10c0eec76260851b01/shim.js]
+
+require("core-js/shim");
+// 转化generator函数
+require("regenerator-runtime/runtime");
+
+require("core-js/fn/regexp/escape");
+// polyfill全局只能引用一次
+if (global._babelPolyfill) {
+  throw new Error("only one instance of babel-polyfill is allowed");
+}
+global._babelPolyfill = true;
+
+var DEFINE_PROPERTY = "defineProperty";
+function define(O, key, value) {
+  O[key] || Object[DEFINE_PROPERTY](O, key, {
+    writable: true,
+    configurable: true,
+    value: value
+  });
+}
+
+define(String.prototype, "padLeft", "".padStart);
+define(String.prototype, "padRight", "".padEnd);
+
+"pop,reverse,shift,keys,values,entries,indexOf,every,some,forEach,map,filter,find,findIndex,includes,join,slice,concat,push,splice,unshift,sort,lastIndexOf,reduce,reduceRight,copyWithin,fill".split(",").forEach(function (key) {
+  [][key] && define(Array, key, Function.call.bind([][key]));
+});
+
+```
+
 ## babel-runtime
 
 [https://www.npmjs.com/package/babel-plugin-transform-runtime#technical-details](https://www.npmjs.com/package/babel-plugin-transform-runtime#technical-details)
@@ -249,13 +285,17 @@ flow
 
 ### 用法
 
+- 浏览器列表语法 [https://github.com/ai/browserslist](https://github.com/ai/browserslist)
+- node: `node: true` , `node: current` 以当前node版本进行编译
+
 ```json
 {
   "presets": [
     ["env", {
       "targets": {
         "browsers": ["last 2 versions", "safari >= 7"]
-      }
+      },
+      "node": "6.5"
     }]
   ]
 }
@@ -277,6 +317,423 @@ flow
 
 [https://www.npmjs.com/package/babel-plugin-transform-runtime](https://www.npmjs.com/package/babel-plugin-transform-runtime)
 
+```json
+{
+    "presets": [
+        ["env", {
+            "target": {
+                /*参考 https://github.com/ai/browserslist*/
+                "browers": ["Chrome > 30"]
+            }
+        }]
+    ],
+    "plugins": [
+        ["transform-runtime", {
+         // 是否在行内添加helper函数, 默认true
+          "helpers": true, // defaults to true 
+          // 是否让新的特性(Promise, Set, Map等)使用本地的polyfill(即在本文件内添加相应的polyfill函数), 默认true
+          "polyfill": false, // defaults to true 
+          "regenerator": true, // defaults to true 
+          "moduleName": "babel-runtime" // defaults to "babel-runtime" 
+        }]
+    ]
+}
+```
 
 
+### polyfill参数
 
+如要编译个Promise
+
+原文件为:
+
+```
+require('babel-polyfill')
+const p = new Promise(function (resolve, reject) {
+    setTimeout(()  => {
+        resolve('ok')
+    }, 100)
+})
+p.then(res => console.log(res))
+
+```
+
+如果polyfill参数设为false
+则编译结果为
+
+```
+require('babel-polyfill')
+var p = new Promise(function (resolve, reject) {
+    setTimeout(function () {
+        resolve('ok');
+    }, 100);
+});
+p.then(function (res) {
+    return console.log(res);
+});
+
+```
+
+若设为true
+则结果为, 在本地添加了polyfill函数
+
+```
+'use strict';
+
+var _promise = require('babel-runtime/core-js/promise');
+
+var _promise2 = _interopRequireDefault(_promise);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+require('babel-polyfill');
+
+var p = new _promise2.default(function (resolve, reject) {
+    setTimeout(function () {
+        resolve('ok');
+    }, 100);
+});
+p.then(function (res) {
+    return console.log(res);
+});
+
+```
+
+### regenerator参数
+
+默认true
+
+转化generator或async函数的 regeneratorRuntime函数是否使用全局的, 使用全局的会污染全局作用域
+
+原文件
+
+```javascript
+function* stateGenerator () {
+    yield 1
+    yield 3
+    yield 5
+}
+
+const sg = stateGenerator()
+let res = sg.next()
+console.log(res);
+res = sg.next()
+console.log(res);
+res = sg.next()
+console.log(res);
+res = sg.next()
+console.log(res);
+
+```
+
+值为true时, 编译结果, 不污染全局作用域
+
+```
+"use strict";
+
+var _regenerator = require("babel-runtime/regenerator");
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var _marked = [stateGenerator].map(_regenerator2.default.mark);
+
+function stateGenerator() {
+    return _regenerator2.default.wrap(function stateGenerator$(_context) {
+        while (1) {
+            switch (_context.prev = _context.next) {
+                case 0:
+                    _context.next = 2;
+                    return 1;
+
+                case 2:
+                    _context.next = 4;
+                    return 3;
+
+                case 4:
+                    _context.next = 6;
+                    return 5;
+
+                case 6:
+                case "end":
+                    return _context.stop();
+            }
+        }
+    }, _marked[0], this);
+}
+
+var sg = stateGenerator();
+var res = sg.next();
+console.log(res);
+res = sg.next();
+console.log(res);
+res = sg.next();
+console.log(res);
+res = sg.next();
+console.log(res);
+```
+
+值设为false时, 会使用全局的regeneratorRuntime函数. 
+
+```javascript
+
+"use strict";
+
+var _marked = [stateGenerator].map(regeneratorRuntime.mark);
+
+function stateGenerator() {
+    return regeneratorRuntime.wrap(function stateGenerator$(_context) {
+        while (1) {
+            switch (_context.prev = _context.next) {
+                case 0:
+                    _context.next = 2;
+                    return 1;
+
+                case 2:
+                    _context.next = 4;
+                    return 3;
+
+                case 4:
+                    _context.next = 6;
+                    return 5;
+
+                case 6:
+                case "end":
+                    return _context.stop();
+            }
+        }
+    }, _marked[0], this);
+}
+
+var sg = stateGenerator();
+var res = sg.next();
+console.log(res);
+res = sg.next();
+console.log(res);
+res = sg.next();
+console.log(res);
+res = sg.next();
+console.log(res);
+```
+
+### moduleName 
+
+默认是 'babel-runtime'
+
+设置引用helper函数的包的名字/路径.
+
+如设置为
+```
+{
+    'moduleName': 'haha/xixi/runtime'
+}
+```
+
+则编译后的结果引用helper时
+
+```
+var _promise = require('haha/xixi/babel-runtime/core-js/promise');
+
+```
+
+### babel-plugin-transform-runtime 源码解析
+
+插件的源码
+
+[https://github.com/babel/babel/blob/master/packages/babel-plugin-transform-runtime/src/index.js](https://github.com/babel/babel/blob/master/packages/babel-plugin-transform-runtime/src/index.js)
+
+![导出的对象结构](./images/chatu/babel.transfor-runtime.png)
+
+模块导出的对象包括3个属性.
+- __esModule: 用来表示该模块是个ES6模块, 
+- default: 默认导出的函数, 用来转化ES6代码. 
+- definitions属性包含了内置的对象(build-in), 及Array,Object, Number等新增的方法名称
+
+```javascript
+// 导出一个函数
+export default function ({type: t}) {
+    // 返回一个对象
+    return {
+        // pre方法用来给当前要转换的函数做预处理, 增加帮助函数的引用, 及增加generator函数的运行时帮助函数
+        pre (file) {
+            
+        },
+        visitor: {
+            // 改变引用识别符  Symbol() -> _core.Symbol(); new Promise -> new _core.Promise
+            ReferencedIdentifier () {},
+            // arr[Symbol.iterator]() -> _core.$for.getIterator(arr)
+            CallExpression () { },
+            // Symbol.iterator in arr -> core.$for.isIterable(arr)
+            BinaryExpression () {},
+            //  Array.from -> _core.Array.from
+            MemberExpression: {
+                enter () {},
+                exit () {}
+            }
+        }
+    }
+}
+
+```
+
+
+## uglifyjs-webpack-plugin
+
+[https://www.npmjs.com/package/uglifyjs-webpack-plugin](https://www.npmjs.com/package/uglifyjs-webpack-plugin)
+
+js压缩插件
+该插件默认不支持ES6语法. 对于ES6语法可能会因压缩出错. 
+解决方法:
+安装
+ES6-capable, a.k.a. harmony
+
+```
+yarn add git://github.com/mishoo/UglifyJS2#harmony-v2.8.22 --dev
+
+```
+
+如果是压缩ES5
+
+```
+yarn add uglify-js --dev
+```
+
+```
+new UglifyJsPlugin({
+  mangle: {
+    // Skip mangling these 忽略以下函数的属性.
+    except: ['$super', '$', 'exports', 'require']
+  }
+})
+```
+
+## babel module 解析
+
+babel 6 的模块解析不会添加module.exports = exports['default'] = ''
+
+**原文件:**
+export文件:
+
+```JavaScript
+
+export default {
+    haha: '哈哈'
+}
+
+```
+
+原import文件
+
+```JavaScript
+import {haha} from './module.export.js'
+console.log(haha);
+```
+
+** 编译后: **
+
+export文件
+
+```JavaScript
+
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    haha: '哈哈'
+};
+
+```
+
+import文件
+
+```JavaScript
+'use strict';
+
+var _moduleExport = require('./module.export.js'); // 导出的对象为 { __esModule: true, default: {haha: '哈哈'}}
+console.log(_moduleExport.haha); // 输出undefined
+
+```
+
+**问题:**
+
+原文件的 export default 编译后为 exports.default = {}. 而非module.exports = {} 此时导出的对象是 {default; {}}. 因此在引入的时候会出错. 当然使用ES6对象的解构语法也会出错.
+
+使用的时候可以 const M = require('./export.js').default;  获取模块的default属性可以获取导出模块导出的内容.
+
+
+### babel-plugin-transform-es2015-modules-commonjs
+
+[https://babeljs.io/docs/plugins/transform-es2015-modules-commonjs/#optionsstrict](https://babeljs.io/docs/plugins/transform-es2015-modules-commonjs/#optionsstrict)
+
+该插件用于把ES6模块转换为commonjs模块, 对于export default会默认转为exports['default']
+
+```javascript
+//input
+export default 42;
+```
+
+```javascript
+// output
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+exports.default = 42;
+
+```
+
+**配置**
+
+```json
+// without options
+{
+  "plugins": ["transform-es2015-modules-commonjs"]
+}
+
+// with options
+{
+  "plugins": [
+    ["transform-es2015-modules-commonjs", {
+      "allowTopLevelThis": true
+    }]
+  ]
+}
+```
+
+**可选参数**
+
+- loose: Boolean 默认 false. 
+
+默认情况下导出的模块会通过defineProperty方法添加不可枚举的__esModule属性, 对于不支持该方法的场景, 需要设置loose为true
+
+```JavaScript
+var foo = exports.foo = 5;
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+```
+
+当loose为true时导出的模块
+
+```JavaScript
+var foo = exports.foo = 5;
+exports.__esModule = true;
+
+```
+
+- strict: boolean, defaults to false
+
+非严格模式下导出模块会增加__esModule属性, 严格模式不会
+
+- 
+
+
+## 遇到的坑
+
+- 使用 babel-preset-env 的时候报一些plugin找不到的错误, rm -rf node_modules 再重新安装一下npm包解决. 
+
+- 压缩的插件UglifyJsPlugin需要在babel之后, 因为该插件不会识别新语法, 可能会错误压缩.
