@@ -1,11 +1,15 @@
+[TOC]
+
 # webpack 学习笔记
 
-### 比较
+[官方文档](https://webpack.js.org)
+
+## 比较
 
 webpack 与其他打包工具的对比: [http://survivejs.com/webpack/webpack-compared/](http://survivejs.com/webpack/webpack-compared/)
 
 
-### 简介
+## 简介
 
 官网对webpack的定义是MODULE BUNDLER，他的目的就是把有依赖关系的各种文件打包成一系列的静态资源
 
@@ -293,6 +297,163 @@ module.exports = {
 }
 
 ```
+
+## Output
+
+打包后的模块默认导出一个空对象, 因此如果是要作为一个npm包或者库文件使用, 需要设置输出的类型. 
+
+```json
+// 配置
+output: {
+  // 输出的文件名
+  filename: '[name].js',
+  // 输出的文件的路径
+  path: path.resolve(__dirname, 'build'),
+  // 作为库文件的话, 需要设置一个输出的变量名, 如jQuery的"$".该名称会作为librayTarget的属性
+  library: 'gTag',
+  // libraryTarget中要导出的模块
+  libraryExport: 'default',
+  // 库文件的导出方式
+  libraryTarget: 'commonjs'
+}
+
+```
+
+导出的内容及使用示例
+
+```JavaScript
+// 如编写的库文件"g-tag.js"最后导出如下内容.
+module.exports = function gTag () {
+    /****/
+}
+
+// 使用的时候我们如下希望作为一个库文件来使用. 但是webpack导出的文件默认引用的是一个空对象. 需要配置library相关属性才输出所需要的内容及格式.
+
+var gTag = require('g-tag.js')
+gTag();
+
+```
+
+### Output.library
+
+string|object. 
+
+设置导出的库文件的名称. 
+
+[文档](https://webpack.js.org/configuration/output/#output-library)
+
+### Output.libraryExport
+string or string[]  (since webpack 3.0.0)
+Default: _entry_return_
+配置libraryTarget中导出的模块
+
+
+### Output.libraryTarget
+
+string
+Default: "var"
+
+配置库文件暴漏的方式
+
+可选的值
+
+#### libraryTarget: "var"
+
+```javascript
+// 库文件加载后. gTag会注册作为一个变量. 可以直接使用, 适合浏览器端. 
+
+// 打包后的的文件结构如下. 定义一个gTag变量
+var gTag = (function () {
+  // 返回模块最后输出的内容
+  return __webpack_require__(__webpack_require__.s = 116);
+})([/**module List**/])
+
+// 如果设置了libraryExport属性. 如 libraryExport: "default". 则打包后的文件为
+
+var gTag = (function () {
+  // 返回模块最后输出的内容
+  return __webpack_require__(__webpack_require__.s = 116);
+  // 导出libraryExport所设置的属性值并赋予gTag变量. 
+})([/**module List**/])['default']
+
+```
+
+#### libraryTarget: "this"
+
+导出为this的属性, 可如下使用
+
+```javascript
+// gTag会作为新文件的this的一个属性. 通过如下方式可以引入
+var gTag = this["gtag"] = require('../build/index.js');
+gTag()
+
+```
+
+### libraryTarget: "window"
+
+设置的变量会注册为window的属性
+
+```JavaScript
+
+// 打包之后的文件结构为, 设置的变量会注册为window的属性
+window["gTag"] = (function () {
+  // 返回模块最后输出的内容
+  return __webpack_require__(__webpack_require__.s = 116);
+})([/**module List**/])
+
+// 在文件中使用
+window.gTag();
+
+```
+
+### libraryTarget: "global"
+
+设置的变量会注册为window的属性
+
+```JavaScript
+
+// 打包之后的文件结构为, 设置的变量会注册为window的属性
+global["gTag"] = (function () {
+  // 返回模块最后输出的内容
+  return __webpack_require__(__webpack_require__.s = 116);
+})([/**module List**/])
+
+// 在文件中使用
+global.gTag();
+
+```
+
+### libraryTarget: "commonjs"
+
+适用于commonjs环境中. 库文件的返回值会作为eports的一个属性
+
+```javascript
+exports['gTag'] = (function () {
+  // 返回模块最后输出的内容
+  return __webpack_require__(__webpack_require__.s = 116);
+})([/**module List**/])
+
+// 在文件中使用
+var gTag = require('g-tag.js').gTag
+gTag()
+
+```
+### libraryTarget: "commonjs2"
+
+适用于commonjs环境中. 库文件的返回值会作为module.eports的一个属性
+
+```javascript
+module.exports['gTag'] = (function () {
+  // 返回模块最后输出的内容
+  return __webpack_require__(__webpack_require__.s = 116);
+})([/**module List**/])
+
+// 在文件中使用
+var gTag = require('g-tag.js')
+gTag()
+
+```
+另外还可以取值 amd, umd. 
 
 ## Modules 模块
 
