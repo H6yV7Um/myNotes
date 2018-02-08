@@ -1,0 +1,123 @@
+margin 0 auto
+定位
+transform
+display: flex; align-items: center; justify-content: middle;
+
+
+左右居中
+text-align:center;
+
+margin 0 auto
+positon: absolute; left: 50%; margin-left: -1/2width; transform: translateX(-50%)
+display: flex; align-items: center; justify-content: center;
+
+垂直居中
+positon: absolute; top: 50%; margin-top: -1/2width; transform: translateY(-50%)
+
+上下左右居中
+display: flex; margin: auto;
+positon: absolute; left: 0; right: 0; top； 0； bottom：0；
+
+
+flex布局
+
+parent
+display: flex
+flex-wrap： no-wrap, wrap
+flex-direction: row, column, row-reverse, column-reverse
+justify-content: flex-start center, flex-end, space-between, space-around.
+align-items: flex-start, center, flex-end, baseline, stretch
+flex-flow: flex-direction, flex-wrap
+
+child
+flex-basis： 200px;
+flex-shrink:
+flex-grow: auto;
+order:
+align-self
+
+
+js 继承
+
+实现方式
+
+1. 对象通过原型链实现属性的复用。 
+
+二. 构造函数式继承
+子类的构造函数中调用父类的构造函数
+优势: 
+1. 可以传入参数
+2. 可以继承父类构造函数中的方法属性
+
+缺点： 1. 无法继承父类原型上的属性
+2. 父类构造函数中的每个函数无法复用。 每个子类实例都会创建一个新的函数。 实例多了会影响性能
+
+三。 组合继承
+通过构造函数继承父类的属性，以保留可以传参的有点， 同时通过原型链继承父类的方法函数。 以实现函数的复用。 
+优点：
+1. 不存在引用类型的问题
+2. 可以传参
+3. 父类的方法函数可以复用
+
+缺点：
+1. 
+父类的构造函数会执行两遍。 
+2. 父类构造函数中的属性会出现两次。 实例对象本身及原型链上各一次。 自身的属性会屏蔽原型链上的属性。 不过同样会导致内存的浪费。 
+
+四： 原型式继承
+
+Object.create. 创建新一个对象， 并设置其原型为传入的对象
+
+五： 寄生组合继承
+
+funciton Super(){
+	this.haha = ''
+}
+
+Super.prototype = {
+	fn1 （）{},
+	fn2(){}
+}
+
+function Sub(){
+	Super.call(this, arg1, arg2)
+}
+
+Sub.prototype = Object.create(Super.prototype)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
