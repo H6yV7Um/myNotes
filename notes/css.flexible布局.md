@@ -35,7 +35,7 @@
 
 ### initial-scale和width
 
-**width=device-width*
+**width=device-width**
 
 viewport的meta标签, 如果只设置width属性. 即设置当前的visual viewport. 
 当取值为device-width时, 即把视口设为ideal-viewport 在iphone和ipad上，无论是竖屏还是横屏，宽度都是竖屏时ideal viewport的宽度。

@@ -12,6 +12,11 @@
 
 提供一些文件管理的方法,  类似mkdir, copy, ensureDir... 的方法,是对fs模块的扩展, 可以使用fs的所有方法, 安装fs-extra后可以不再require fs模块
 
+### klaw-sync
+
+[klaw-sync](https://www.npmjs.com/package/klaw-sync)
+循环读取文件目录
+
 ### chokidar 文件监听 watch file
 
 [https://www.npmjs.com/package/chokidar](https://www.npmjs.com/package/chokidar)
@@ -77,6 +82,32 @@ console.log加颜色
 
 http-proxy-middleware的转发使用的也是该包
 
+### recursive-copy 
+
+复制文件。 把一个目录中的文件复制到另外一个文件
+
+[https://www.npmjs.com/package/recursive-copy](https://www.npmjs.com/package/recursive-copy)
+
+```javascript
+
+var copy = require('recursive-copy');
+ 
+copy('src', 'dest', function(error, results) {
+    if (error) {
+        console.error('Copy failed: ' + error);
+    } else {
+        console.info('Copied ' + results.length + ' files');
+    }
+});
+
+```
+
+### json-server 建立json服务
+
+建立json服务, 可以用来mock数据
+
+[https://www.npmjs.com/package/json-server](https://www.npmjs.com/package/json-server)
+
 ----
 
 ## Browserify 浏览器环境
@@ -138,4 +169,16 @@ A multi-transport async logging library for node.js.
 [lerna](https://www.npmjs.com/package/lerna)
 
 在一个项目中管理多个子packages的发布
+
+### prettier
+
+[官网](https://github.com/prettier/prettier)
+
+用来格式化代码
+
+### husky 包 git hook
+
+[https://www.npmjs.com/package/husky](https://www.npmjs.com/package/husky)
+
+用来设置git hook
 

@@ -2,7 +2,11 @@
 
 ## 浏览器关键时间点 
 
+[https://www.w3.org/TR/navigation-timing-2/#performanceentry](https://www.w3.org/TR/navigation-timing-2/#performanceentry)
+
 ![加载过程](./images/chatu/perf1.png)
+
+![浏览器关键时间点](./images/chatu/perf3.png)
 
 网页加载时间节点
 
@@ -14,7 +18,48 @@
 - DOMContentLoaded 网页结构加载解析成DOM
 - Load 网页加载完成，包括样式图片iframe等加载
 
-## 首字节 TTFB (Time To First Byte)
+## performance属性 获取性能数据
+
+```
+performance.getEntriesByType('navigation') // 获取页面性能参数
+
+```
+
+![performance](./images/chatu/performance.png)
+
+- performance.getEntries() 获取页面各个资源的加载性能, navigation性能以及Paint性能.
+
+
+## performance数据记录过程
+
+[https://www.w3.org/TR/navigation-timing-2/#performanceentry](https://www.w3.org/TR/navigation-timing-2/#performanceentry)
+
+1. startTIme: 设置 startTIme = 0
+2. unloadEventStart: 上个页面unload. 如果不是同域名的页面, unloadEventStart和unloadEventEnd的时间会设置为0
+3. unloadEventEnd: 上个页面unload
+4. workerStart: 如果该url已经注册了worker, 在运行worker之前, 此时会记录workerStart时间
+5. fetchStart: 在发出HTTP GET请求之前记录fetchStart时间, 或者是匹配到缓存读取缓存之前
+6. 把 domainLookupStart, domainLookupEnd, connectStart and connectEnd 的值设置为与 fetchStart 相同.
+7. name: 把当前的url地址设为name属性
+8. 如果是读取的缓存, 或本地资源,则跳到  request-start-step.
+9. domainLookupStart: 如果需要查询域名, 进行域名解析, 并记录时间为 domainLookupStart, 否则跳到connect-start-step
+10. domainLookupEnd: 在domain解析完成之后记录时间为domainLookupEnd.
+11. [connect-start-step]: 如果建立了长连接, 则设置 connectStart 和 connectEnd 与domainLookupEnd的值相同. 否则在初始化建立连接时记录时间为connectStart, 于server建立连接之后记录为connectEnd. 在连接建立之后设置 nextHopProtocol的值为当前的http的协议(如 http/1.1).
+12. [request-start-step]: 客户端在发送请求之前设置 requestStart时间
+13. responseStart: 在客户端收到response的第一个字节时记录
+14. responseEnd: 收到response的最后一个字节时
+15. domInteractive: Record the time as domInteractive immediately before the user agent sets the current document readiness to "interactive".
+16. domContentLoadedEventStart: 
+17. domContentLoadedEventEnd
+18. domComplete 
+19. loadEventStart
+20. loadEventEnd
+21. Set the duration to a DOMHighResTimeStamp equal to the difference between loadEventEnd and startTime, respectively.
+
+
+## 首字节等关键时间点概念
+
+### 首字节 TTFB (Time To First Byte)
 
 从最开始的客户端向服务端发出请求到接受到服务端返回的第一个字节的时间.这个第一个字节不是内容, 而是http头的第一个字节
 
@@ -56,9 +101,9 @@ TTSR = TTFB + TTDD + TTHE;
 
 - domLoading: 整个过程开始的时间戳, 浏览器开始解析HTML文档第一批收到的字节document
 - domInteractive: 可以交互, 浏览器完成解析并且所有HTML 和 DOM 构建完毕的时间点.
-- domContentLoaded: 标记 DOM 准备就绪并且没有样式表阻碍 JS执行的时间点 - 意味着我们可以开始构建呈现树了。
+- domContentLoaded: 标记 DOM 准备就绪并且没有样式表阻碍 JS执行的时间点 - 意味着我们可以开始构建呈现树了。 此时一些图片资源可能还没有下载完成, 此事件在domComplete之前完成.
   - 很多 JavaScript 框架等待此事件发生后，才开始执行它们自己的逻辑。因此，浏览器会通过捕获 EventStart 和 EventEnd 时间戳，跟踪执行逻辑所需的时间。
-- domComplete: 所有资源下载完成, 也即加载旋转图标停止旋转.
+- domComplete: 所有资源下载完成,包括css, image等资源. 也即加载旋转图标停止旋转.
 - loadEvent: 网页加载的最后一步, 会触发onLoad事件. 
 
 DomContentLoaded 通常标记 [DOM 和 CSSOM 都准备就绪] 的时间 , 通俗的讲就是：页面解析完成的时间，在高级浏览器里有对应的DOM事件 - DOMContentLoaded，Firefox官方的解析如下：
@@ -100,14 +145,191 @@ TTI(Time To Interact)指的是页面可交互的时间。页面中的交互包�
 
 在HTML5应用中，JS模板引擎的使用是非常普遍的，这个使用得好可以提高TTI时间，使用得不好，会比没有使用模板引擎而是通过后端模板引擎渲染的页面更慢。客户端使用JS模板引擎进行渲染的过程必须知会用户，让用户不至于见到一个空白页面，
 
+
+## HTML的解析
+
+
+#### 脚本解析
+遇到script会进行脚本解析, 并阻塞后续文档的解析, 如果是外引的, 需要先加载再解析, 也是同步的
+
+#### 预解析
+新的浏览器做了优化, 在脚本解析时会开启另一个线程解析剩余的文档, 主要是解析出需要网络加载的资源, 进行加载. 以提高整体速度. 
+
+#### css
+由于js中可能会需要依赖css的计算结果, 因此需要等css脚本之后如果有js脚本, 则此时会阻塞HTML剩余部分的解析, 需要css解析完成之后再解析js脚本及后续的部门.
+
+Firefox在存在样式表还在加载和解析时阻塞所有的脚本，而Chrome只在当脚本试图访问某些可能被未加载的样式表所影响的特定的样式属性时才阻塞这些脚本
+
+
+
+## 预加载解析
+
+### preRender
+
+[https://www.chromium.org/developers/design-documents/prerender](https://www.chromium.org/developers/design-documents/prerender)
+
+[w3c prerender标准](https://www.w3.org/TR/resource-hints/#prerender)
+
+```
+
+<link rel="prerender">
+
+```
+
+#### 机制
+
+
+
+## 其他资料
+
+#### chrome脚本解析加速
+
+参考 https://blog.chromium.org/2015/03/new-javascript-techniques-for-rapid.html
+
+- 原来的js的下载解析在一个线程中, 是同步的, 
+chrome41开始在js下载的同时会利用其他线程进行js的解析, 因此在js下载完成之后很快就会完成js解析.
+- code caching. 之前每次刷新页面v8引擎都会解析该页面的js脚本, 离开页面时会丢弃解析的数据. 
+
+### 脚本异步执行方法
+
+```
+<script type="text/javascript" src="demo_async.js" async="async"></script>
+```
+
+async 属性规定一旦脚本可用，则会异步执行。
+
+注释：async 属性仅适用于外部脚本（只有在使用 src 属性时）。
+
+注释：有多种执行外部脚本的方法：
+
+如果 async="async"：脚本相对于页面的其余部分异步地执行（当页面继续进行解析时，脚本将被执行）
+如果不使用 async 且 defer="defer"：脚本将在页面完成解析时执行
+如果既不使用 async 也不使用 defer：在浏览器继续解析页面之前，立即读取并执行脚本
+
+## JS混淆对性能影响
+
+原文: [前端优化系列 - JS混淆引入性能天坑](http://blog.csdn.net/yunqishequ1/article/details/78873668)
+
+js混淆通常有正则替换及抽象语法树修改两种方式, 在语法树修改的过程中会引入多余的代码, 有时候会引入性能问题. 
+
+
+
+
+
+## 用到的工具
+
+### js加载测试
+
+![js并行加载测试](./images/chatu/perf-js加载.png)
+
+由图可以看出, js可以并行加载, 不过由于HTTP请求数的限制, 同个域名最多只能并行6个请求, 超出会延后下载.
+但是js的执行会阻塞. 由于js可能会修改HTML或样式, 或者需要获取样式中的值如(var width = $('.box').width), 此时如果在样式渲染完成前js先执行,会导致无法获得准确的值. 
+
+在解析HTML过程中遇到脚本, 主进程会解析当前脚本并阻塞后续的解析, 同时会开启另外一个线程预解析后面的文档, 并加载需要加载的网络资源, 以此提高解析速度. 与解析不会改变Dom树, 这个工作会留给主解析过程, 自己只解析外部资源的引用, 如外部脚本, 样式表及图片资源. 
+
+
+###  NetWork面板
+
+ [chrome devtools network面板分析](https://developers.google.com/web/tools/chrome-devtools/network-performance/reference)
+
+ chrome network面板 Timing 字段 解释
+
+![chrome network面板](./images/chatu/web.性能优化.waterfall-hover.png)
+
+1.1 Queueing: 请求在队列中的等待时间. 有3种情况. 1. 如果有更高优先级的请求, 2. 该域的TCP链接超过6个(HTTP/1.0, HTTP/1.1的限制), 3. 浏览器正在分配缓存空间
+
+1.2 Stalled: 队列中等待时的那些原因导致的请求被暂停的时间
+
+1.3 DNS Lookup: DNS解析时间
+
+1.4 Proxy negotiation: 请求转发代理, 与代理服务器连接所用时间
+
+1.5 Request sent: 请求发送
+
+1.6 ServiceWorker Preparation: 浏览器启动worker
+
+1.7 Request to ServiceWorker: 请求被发送到worker
+
+1.8 Waiting (TTFB): 首字节返回时间
+
+1.9 Content Download: 收到请求下载数据的时间
+
+1.10 Receiving Push: 通过HTTP/2 Push 获取数据
+
+1.11 Reading Push: 读取上一步获取的数据
+
+### 资源加载图标含义
+
+[了解 Resource Timing](https://developers.google.com/web/tools/chrome-devtools/network-performance/understanding-resource-timing)
+
+### Chrome Timeline面板解析
+
+[chrome timeline 面板解析](https://developers.google.com/web/tools/chrome-devtools/evaluate-performance/timeline-tool)
+
+![timeline-panel](./images/chatu/timeline-panel.png)
+
+包括四部分
+
+1. 控制区: 
+2. Overview: 页面性能的汇总.
+3. 火焰图: CPU堆叠情况的可视化. 火焰图上有3条垂直的虚线. 绿色是 FirstPaint时间, 蓝色是 DomContentedLoaded事件,  红色是 onLoad事件.
+4. details: 选择事件时显示该事件的信息, 未选择时显示选定时间范围的相关信息.
+
+
+#### Overview 部分
+
+包括以下三个图表内容
+
+1. FPS。每秒帧数。绿色竖线越高，FPS 越高。 FPS 图表上的红色块表示长时间帧，很可能会出现卡顿。
+2. CPU。 CPU 资源。此面积图指示消耗 CPU 资源的事件类型。
+3. NET。每条彩色横杠表示一种资源。横杠越长，检索资源所需的时间越长。 每个横杠的浅色部分表示等待时间（从请求资源到第一个字节下载完成的时间。 深色部分表示传输时间.
+
+net图表横杠的色彩含义
+
+- HTML为蓝色
+- js脚本为黄色
+- css文件为紫色
+- 媒体文件为绿色
+- 其他资源为灰色
+
+
+![timePanel](./images/chatu/timeline-panel2.png)
+
+
+
+### chrome performance 面板字段解释
+
+(chrome performance 面板详细解释)[https://developers.google.com/web/tools/chrome-devtools/evaluate-performance/reference]
+
+### chrome Trace
+
+使用说明: [https://www.chromium.org/developers/how-tos/trace-event-profiling-tool/recording-tracing-runs]
+
+### 谷歌官方 PageSpeed Insights 
+
+谷歌官方 网站性能测试工具
+
+[PageSpeed Insights](https://developers.google.com/speed/pagespeed/insights/?)
+
+
+
 ### 参考资料
 
 - [浏览器关键时间点](http://zhangmhao.github.io/2014/05/20/%E6%B5%8F%E8%A7%88%E5%99%A8%E5%85%B3%E9%94%AE%E6%97%B6%E9%97%B4%E7%82%B9/)
 
 
+- [chrome js脚本解析加速改进](https://blog.chromium.org/2015/03/new-javascript-techniques-for-rapid.html)
 
 
+- [避免大型、复杂的布局和布局抖动](https://developers.google.com/web/fundamentals/performance/rendering/avoid-large-complex-layouts-and-layout-thrashing)
 
+- [高性能网络](https://www.igvita.com/posa/high-performance-networking-in-google-chrome/) 讨论了 Chrome 网络内部机制，以及您如何充分利用它们让您的网站更快。
+
+- [gzip 压缩的工作原理](https://developers.google.com/speed/articles/gzip)提供了 gzip 压缩的高级概览，并介绍了这种压缩为什么是一种不错的方法。
+
+- [网页性能最佳做法](https://developers.google.com/speed/docs/best-practices/rules_intro)提供了更多用于优化您的网页或应用的网络性能的提示。
+
+- [chrome resource Timing各阶段解析](https://developers.google.com/web/tools/chrome-devtools/network-performance/understanding-resource-timing)
 
 
 

@@ -477,6 +477,21 @@ git log -g [-n] HEAD // 也可以输出引用的变更记录
 
 ```
 
+### git config 配置用户信息
+
+设置全局的
+
+```bash
+$ git config --global user.name "John Doe"
+$ git config --global user.email "john@doe.org"
+```
+
+设置本地仓库的
+
+```bash
+$ git config user.name "John Doe"
+$ git config user.email "john@doe.org"
+```
 
 
 
