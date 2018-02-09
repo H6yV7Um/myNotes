@@ -55,7 +55,7 @@ CAS是中央认证服务Central Authentication Service的简称。最初由耶�
 
 ### SSO 认证流程
 
-  ![sso](../images/chatu/sso6.png)
+  ![sso](../images/chatu/sso登录过程6.jpg)
 
 ## upm设计
 
