@@ -206,6 +206,12 @@ async 属性规定一旦脚本可用，则会异步执行。
 如果不使用 async 且 defer="defer"：脚本将在页面完成解析时执行
 如果既不使用 async 也不使用 defer：在浏览器继续解析页面之前，立即读取并执行脚本
 
+对于async和deferred的scripts, chrome会开启一个独立的线程在脚本下载的同时来解析脚本. 因此脚本一旦下载完成, 迅速就回被解析完毕.
+
+![脚本解析线程](./images/chatu/performance-script-stream-thread.jpg)
+
+参考[https://blog.chromium.org/2015/03/new-javascript-techniques-for-rapid.html](https://blog.chromium.org/2015/03/new-javascript-techniques-for-rapid.html)
+
 ## JS混淆对性能影响
 
 原文: [前端优化系列 - JS混淆引入性能天坑](http://blog.csdn.net/yunqishequ1/article/details/78873668)
@@ -282,7 +288,8 @@ js混淆通常有正则替换及抽象语法树修改两种方式, 在语法树�
 
 1. FPS。每秒帧数。绿色竖线越高，FPS 越高。 FPS 图表上的红色块表示长时间帧，很可能会出现卡顿。
 2. CPU。 CPU 资源。此面积图指示消耗 CPU 资源的事件类型。
-3. NET。每条彩色横杠表示一种资源。横杠越长，检索资源所需的时间越长。 每个横杠的浅色部分表示等待时间（从请求资源到第一个字节下载完成的时间。 深色部分表示传输时间.
+3. NET。每条彩色横杠表示一种资源。横杠越长，检索资源所需的时间越长。 每个横杠的头部的灰色线表示从队列等待到发出请求的时间, 浅色部分表示等待时间（从请求发出到第一个字节下载完成的时间)。 深色部分以及尾部的灰色线表示文件传输时间(即从TTFB到finish load). 
+4. NET面板中 HTML 文件的深蓝色部分表示发出请求到首字节时间, 后面的灰色的线表示从TTFB到HTML文件finish load的时间. 
 
 net图表横杠的色彩含义
 
@@ -294,7 +301,6 @@ net图表横杠的色彩含义
 
 
 ![timePanel](./images/chatu/timeline-panel2.png)
-
 
 
 ### chrome performance 面板字段解释
@@ -331,6 +337,11 @@ net图表横杠的色彩含义
 
 - [chrome resource Timing各阶段解析](https://developers.google.com/web/tools/chrome-devtools/network-performance/understanding-resource-timing)
 
+- [对于async deferred的js脚本用多线程解析js脚本](https://blog.chromium.org/2015/03/new-javascript-techniques-for-rapid.html)
+
+- [谷歌使用 RAIL 模型评估性能](https://developers.google.com/web/fundamentals/performance/rail)
+
+- [谷歌官方浏览器渲染性能](https://developers.google.com/web/fundamentals/performance/rendering/)
 
 
 
