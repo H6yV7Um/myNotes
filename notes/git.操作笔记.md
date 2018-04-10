@@ -211,7 +211,7 @@ interactive 交互式的执行rebase, 会打开命令编辑界面. 输入每个c
 
 合并当前分支的前4个commit为一个. 只合并commit message, 仍然会保留每个commit所做的文件变更.
 
-或者 git rebse -i \<commit-hash\> 会重写从当前commit 到指定hash的commit记录
+或者 git rebase -i \<commit-hash\> 会重写从当前commit 到指定hash的commit记录
 
 ### 冲突处理
 

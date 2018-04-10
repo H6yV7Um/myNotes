@@ -110,6 +110,27 @@ copy('src', 'dest', function(error, results) {
 
 ----
 
+### urllib node发送url请求
+
+[https://npm.taobao.org/package/urllib](https://npm.taobao.org/package/urllib)
+
+```javascript
+
+var urllib = require('urllib');
+
+urllib.request('http://cnodejs.org/', function (err, data, res) {
+  if (err) {
+    throw err; // you need to handle error
+  }
+  console.log(res.statusCode);
+  console.log(res.headers);
+  // data is Buffer instance
+  console.log(data.toString());
+});
+
+```
+
+
 ## Browserify 浏览器环境
 
 ### superagent HTTP请求库
@@ -155,6 +176,36 @@ A multi-transport async logging library for node.js.
 ----
 
 ## gulp 插件
+
+### webpack-stream
+
+[webpack-stream](https://www.npmjs.com/package/webpack-stream)
+
+用于在gulp任务流中插入webpack处理过程
+
+## gulp-footer 
+
+[https://www.npmjs.com/package/gulp-footer](https://www.npmjs.com/package/gulp-footer)
+
+在文件底部插入另一个文件内容
+
+## gulp-concat
+
+连接多个文件
+
+## gulp-replace
+
+替换文件中指定的内容
+
+## gulp-rename
+
+重命名文件
+
+## gulp-clone
+
+在内存中复制文件
+
+
 
 ## 其他
 

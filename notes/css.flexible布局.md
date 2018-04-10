@@ -10,8 +10,8 @@
 
 ### 视口的3个概念
 
-- layout viewport 当前页面的css宽度, 即html元素的宽度, 通过该方法可以获取到, document.documentElement.clientWidth
-- visual viewport 当前浏览器的可视区域的宽度, 通过window.innerWidth, 也是当前所设置的视口宽度.
+- layout viewport 当前页面的css宽度, 即html元素的宽度, 通过该方法可以获取到 window.innerWidth 
+- visual viewport 当前浏览器的可视区域的宽度, 通过 document.documentElement.clientWidth, 也是当前所设置的视口宽度. 新增的API为 window.visualViewport 可获取可视区域的宽高
 - ideal viewport 当前设备的理想视口宽度, 设备出厂时决定, 很多设备会设为320px或375px.
 
 ### viewport meta标签

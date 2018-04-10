@@ -28,13 +28,15 @@ performance.getEntriesByType('navigation') // 获取页面性能参数
 ![performance](./images/chatu/performance.png)
 
 - performance.getEntries() 获取页面各个资源的加载性能, navigation性能以及Paint性能.
+- performance.getEntriesByType('navigation') 主要的性能在该类型中保存
+
 
 
 ## performance数据记录过程
 
 [https://www.w3.org/TR/navigation-timing-2/#performanceentry](https://www.w3.org/TR/navigation-timing-2/#performanceentry)
 
-1. startTIme: 设置 startTIme = 0
+1. startTime: 设置 startTime = 0
 2. unloadEventStart: 上个页面unload. 如果不是同域名的页面, unloadEventStart和unloadEventEnd的时间会设置为0
 3. unloadEventEnd: 上个页面unload
 4. workerStart: 如果该url已经注册了worker, 在运行worker之前, 此时会记录workerStart时间
@@ -146,11 +148,14 @@ TTI(Time To Interact)指的是页面可交互的时间。页面中的交互包�
 在HTML5应用中，JS模板引擎的使用是非常普遍的，这个使用得好可以提高TTI时间，使用得不好，会比没有使用模板引擎而是通过后端模板引擎渲染的页面更慢。客户端使用JS模板引擎进行渲染的过程必须知会用户，让用户不至于见到一个空白页面，
 
 
-## HTML的解析
+## HTML文档的解析
 
 
 #### 脚本解析
-遇到script会进行脚本解析, 并阻塞后续文档的解析, 如果是外引的, 需要先加载再解析, 也是同步的
+遇到script会进行脚本解析, 并阻塞后续文档的解析, 如果是外引的, 需要先加载再解析, 也是同步的.
+
+对于动态插入页面的脚本，先返回的脚本先执行。
+如通过 appendChild() 依次插入到页面3个脚本分别为 a.js, b.js, c.js。 其执行顺序按照脚本下载完成的顺序执行。先返回数据的先执行。 
 
 #### 预解析
 新的浏览器做了优化, 在脚本解析时会开启另一个线程解析剩余的文档, 主要是解析出需要网络加载的资源, 进行加载. 以提高整体速度. 
@@ -178,6 +183,12 @@ Firefox在存在样式表还在加载和解析时阻塞所有的脚本，而Chro
 
 #### 机制
 
+
+## 渲染性能
+
+[https://developers.google.com/web/fundamentals/performance/rendering/](https://developers.google.com/web/fundamentals/performance/rendering/)
+
+![css渲染性能](./images/chatu/css渲染性能.jpg)
 
 
 ## 其他资料
@@ -329,7 +340,7 @@ net图表横杠的色彩含义
 
 - [避免大型、复杂的布局和布局抖动](https://developers.google.com/web/fundamentals/performance/rendering/avoid-large-complex-layouts-and-layout-thrashing)
 
-- [高性能网络](https://www.igvita.com/posa/high-performance-networking-in-google-chrome/) 讨论了 Chrome 网络内部机制，以及您如何充分利用它们让您的网站更快。
+- [高性能网络](https://www.igvita.com/posa/high`-performance-networking-in-google-chrome/) 讨论了 Chrome 网络内部机制，以及您如何充分利用它们让您的网站更快。
 
 - [gzip 压缩的工作原理](https://developers.google.com/speed/articles/gzip)提供了 gzip 压缩的高级概览，并介绍了这种压缩为什么是一种不错的方法。
 
