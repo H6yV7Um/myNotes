@@ -30,10 +30,11 @@ tuple1 = ['华山派', 99]; // 正确定义
 // tuple1 = [999, '华山派']; 错误, 第0位定义的是string, 第1位定义的是number.
 let _s = tuple1[0].substr(0); // 正确, string有substr方法
 // let _s = tuple1[0].substr(1); // 错误, number类型没有substr方法
-tuple1 = ['华山派', 99, 8766, '嵩山派']; // 正确
+// tuple1 = ['华山派', 99, 8766, '嵩山派']; // 错误
+tuple1 = ['华山派', 99]; // 正确
 let tuple2: [string|number]; // 指定元素是string或number
-tuple2 = ['华山派', 99]; // 正确定义
-tuple2 = [999, '华山派']; // 正确定义
+tuple2 = ['华山派']; // 正确
+tuple2 = [999]; // 正确
 
 ```
 
