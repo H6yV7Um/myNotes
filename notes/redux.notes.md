@@ -1,5 +1,11 @@
 # redux 学习笔记
 
+## install
+
+```
+yarn add redux react-redux redux-thunk
+```
+
 ## 三大原则
 
 1. Single source of truth 单一数据源

@@ -35,6 +35,19 @@ gulp, karma, PM2,browserify, webpack, BrowserSync, Microsoft's Visual Studio Cod
 
 [https://github.com/expressjs/cors](https://github.com/expressjs/cors)
 
+### chalk
+
+node控制台中输出彩色的文案 
+
+```
+const chalk = require('chalk');
+ 
+console.log(chalk.blue('Hello world!'));
+
+```
+
+[https://www.npmjs.com/package/chalk](https://www.npmjs.com/package/chalk)
+
 ### ws websocket
 
 ws 服务端用来实现websocket
@@ -129,6 +142,19 @@ urllib.request('http://cnodejs.org/', function (err, data, res) {
 });
 
 ```
+
+### rimraf
+
+rimraf build
+
+可以在node中使用的功能类似 rm -rf 的命令
+[https://github.com/isaacs/rimraf](https://github.com/isaacs/rimraf)
+
+### mkdirp
+
+可以在node中使用的功能类似 mkdir 的命令
+
+
 
 
 ## Browserify 浏览器环境
@@ -233,3 +259,8 @@ A multi-transport async logging library for node.js.
 
 用来设置git hook
 
+### normalizr
+
+用于把一个嵌套的数据结构扁平化
+
+[https://github.com/paularmstrong/normalizr](https://github.com/paularmstrong/normalizr)
